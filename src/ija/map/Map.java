@@ -1,4 +1,4 @@
-/*
+/**
  * Source code for the final IJA project
  * Map class
  * (C) Lukas Javorsky (xjavor20)
