@@ -1,4 +1,4 @@
-/*
+/**
  * Source code for the final IJA project
  * Coordinate class
  * (C) Lukas Javorsky (xjavor20)
@@ -10,13 +10,13 @@ package ija.map.map_src;
 
 public class Coordinate{
 
-    private int x_coordinate;
-    private int y_coordinate;
+    private float x_coordinate;
+    private float y_coordinate;
 
     /**
      * Constructor
      */
-    private Coordinate(int x, int y){
+    private Coordinate(float x, float y){
         this.x_coordinate = x;
         this.y_coordinate = y;
     }
@@ -28,7 +28,7 @@ public class Coordinate{
      * @return Assigned coordinate
      *         if x or y is lower than 0, null is returned
      */    
-    public static Coordinate create(int x, int y){
+    public static Coordinate create(float x, float y){
         if (x >= 0 && y >= 0){
             return new Coordinate(x, y);
         }
@@ -39,7 +39,7 @@ public class Coordinate{
      * Getter for X coordinate
      * @return X coordinate
      */
-    public int getX(){
+    public float getX(){
         return this.x_coordinate;
     }
 
@@ -47,7 +47,7 @@ public class Coordinate{
      * Getter for Y coordinate
      * @return Y coordinate
      */
-    public int getY(){
+    public float getY(){
         return this.y_coordinate;
     }
 
