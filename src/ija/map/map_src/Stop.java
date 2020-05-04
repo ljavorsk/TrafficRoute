@@ -15,7 +15,9 @@ import ija.map.map_src.Coordinate;
  * Stop have it's own unique ID, representing Coordinates.
  */
 public class Stop {
+    /// Name of the stop
     private final String name;
+    /// Possition of the stop
     private Coordinate coordinate;
 
     public Stop(String name, Coordinate coordinate){
@@ -51,7 +53,7 @@ public class Stop {
     public int hashCode() {
         int hash = 1;
         hash = hash * 42 + this.name.hashCode();
-        hash = hash * 42 + this.street.hashCode();
+        hash = hash * 42 + this.coordinate.hashCode();
         return hash;
     }
 }
