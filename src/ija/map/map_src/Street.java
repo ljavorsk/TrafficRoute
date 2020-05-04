@@ -18,8 +18,11 @@ import java.util.Arrays;
  * The Street have it's unique ID, representing Coordinates, and may have Stops
  */
 public class Street {
+    /// Unique street's name
     private String id_str;
+    /// Ordered coordinates that represents the street
     private List<Coordinate> list_of_coordinates;
+    /// Stops that are located on the street
     private List<Stop> list_of_stops = new ArrayList<Stop>();
 
     /**
