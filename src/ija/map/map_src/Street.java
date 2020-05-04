@@ -1,4 +1,4 @@
-/**
+/*
  * Source code for the final IJA project
  * Street class
  * (C) Lukas Javorsky (xjavor20)
