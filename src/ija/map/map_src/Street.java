@@ -18,7 +18,7 @@ import java.util.Arrays;
  * The Street have it's unique ID, representing Coordinates, and may have Stops
  */
 public class Street {
-    private String id_str = id;
+    private String id_str;
     private List<Coordinate> list_of_coordinates;
     private List<Stop> list_of_stops = new ArrayList<Stop>();
 
@@ -119,8 +119,8 @@ public class Street {
         if (s == null){
             return false;
         }
-        Coordinate beginning_first = this.begin();
-        Coordinate end_first = this.end();
+        Coordinate beginning_first = this.begin_of_the_street();
+        Coordinate end_first = this.end_of_the_street();
 
         Coordinate beginning_second = s.getCoordinates().get(0);
         Coordinate end_second = s.getCoordinates().get(s.getCoordinates().size() -1);
