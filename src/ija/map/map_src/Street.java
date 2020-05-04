@@ -24,6 +24,8 @@ public class Street {
     private List<Coordinate> list_of_coordinates;
     /// Stops that are located on the street
     private List<Stop> list_of_stops = new ArrayList<Stop>();
+    /// How much traffic is at the road. Values are 1,2,3,4. Default value is 1 (minimal). 
+    private short traffic_overload = 1;
 
     /**
      * Constructor for the Street
@@ -99,7 +101,7 @@ public class Street {
      * Return the end of the street
      * @return ending Coordinate
      */
-    public Coordinate end_of_the_street() {
+    public Coordinate endOfTheStreet() {
         List<Coordinate> street_coords = this.getCoordinates();
         return street_coords.get(street_coords.size() -1);
     }
@@ -108,7 +110,7 @@ public class Street {
      * Return the begin of the street
      * @return beggining Coordinate
      */
-    public Coordinate begin_of_the_street() {
+    public Coordinate beginOfTheStreet() {
         List<Coordinate> street_coords = this.getCoordinates();
         return street_coords.get(0);
     }
@@ -122,8 +124,8 @@ public class Street {
         if (s == null){
             return false;
         }
-        Coordinate beginning_first = this.begin_of_the_street();
-        Coordinate end_first = this.end_of_the_street();
+        Coordinate beginning_first = this.beginOfTheStreet();
+        Coordinate end_first = this.endOfTheStreet();
 
         Coordinate beginning_second = s.getCoordinates().get(0);
         Coordinate end_second = s.getCoordinates().get(s.getCoordinates().size() -1);
@@ -134,6 +136,22 @@ public class Street {
         else {
             return false;
         }
+    }
+
+    /**
+     * Sets the value of traffic overload on the street
+     * @param value One of the values - 1 (minimal), 2, 3, 4 (maximal)
+     */
+    public setTraficOverload(short value){
+        this.traffic_overload = value;
+    }
+
+    /**
+     * Getter for the traffic_overload
+     * @return One of the values - 1 (minimal), 2, 3, 4 (maximal)
+     */
+    public short getTraficOverload(){
+        return this.traffic_overload;
     }
 
 }

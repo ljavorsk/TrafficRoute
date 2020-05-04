@@ -37,7 +37,7 @@ public class Route{
             boolean backwards_coordinates = false;
 
             // We are going from end of the street to the beginning, so coordinates have to be reordered
-            if (starting_point == s.end_of_the_street() || coordinates_in_street.get(0) == s.end_of_the_street()){
+            if (starting_point == s.endOfTheStreet() || coordinates_in_street.get(0) == s.endOfTheStreet()){
                 // Set flag
                 backwards_coordinates = true;
             }
@@ -71,7 +71,7 @@ public class Route{
      * or end of the first street in the streets
      */
     public Route defaultRoute(List<Street> streets, List<Stop> stops_to_visit, Coordinate starting_point){
-        if (!(starting_point == streets.get(0).begin_of_the_street() || starting_point == streets.get(0).end_of_the_street())){
+        if (!(starting_point == streets.get(0).beginOfTheStreet() || starting_point == streets.get(0).endOfTheStreet())){
             return null;
         }
 
@@ -93,7 +93,7 @@ public class Route{
      * Getter for the starting possition possition
      * @return Where the route starts
      */
-    public SimpleImmutableEntry<Coordinate, Street> get_first(){
+    public SimpleImmutableEntry<Coordinate, Street> getFirst(){
         return this.route.get(0);
     }
 
@@ -102,7 +102,7 @@ public class Route{
      * @param current_possition Current possition, where the Line is
      * @return Next possition for Line, or null if the current_possition is not part of the route
      */
-    public SimpleImmutableEntry<Coordinate, Street> get_next(SimpleImmutableEntry<Coordinate, Street> current_possition){
+    public SimpleImmutableEntry<Coordinate, Street> getNext(SimpleImmutableEntry<Coordinate, Street> current_possition){
         int index = this.route.indexOf(current_possition);
 
         if (index != -1){
@@ -119,7 +119,7 @@ public class Route{
      * They should be ordered
      * @return List of stops
      */
-    public List<Stop> get_stops(){
+    public List<Stop> getStops(){
         return this.stops;
     }
 
@@ -128,7 +128,7 @@ public class Route{
      * They are ordered
      * @return List of streets
      */
-    public List<Street> get_streets(){
+    public List<Street> getStreets(){
         return this.streets;
     }
 
@@ -137,7 +137,7 @@ public class Route{
      * @param c Coordinate that may be the stop in route
      * @return true or false, acording to the result
      */
-    public boolean shouldStop (Coordinate c){
+    public boolean shouldStop(Coordinate c){
         for (Stop stop : this.stops) {
             if (c == stop.getCoordinate()){
                 return true;
@@ -145,4 +145,25 @@ public class Route{
         }
         return false;
     }
+
+    /**
+     * Recalculate the route with given closed_street and given detour_streets
+     * @param closed_street The street that is closed, and have to be deleted from route
+     * @param detour_streets The streets that will be connected to the route.
+     * They have to be ordered and first one needs to be connected to street that was closed
+     * @return Recalculated route, or null if parameters are wrong
+     */
+    public Route detourRoute(Street closed_street, Street... detour_streets){
+        // Closed street is not part of the route
+        if (!this.streets.contains(closed_street)){
+            return null;
+        }
+
+        // TODO
+
+        return null;
+
+    }
+
+
 }
