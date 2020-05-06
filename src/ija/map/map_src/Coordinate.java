@@ -73,8 +73,8 @@ public class Coordinate{
     @Override
     public int hashCode() {
         int hash = 1;
-        hash = hash * 42 + this.getX();
-        hash = hash * 42 + this.getY();
+        hash = hash * 42 + Math.round(this.getX());
+        hash = hash * 42 + Math.round(this.getY());
         return hash;
     }
 }
