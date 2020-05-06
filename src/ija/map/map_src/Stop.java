@@ -9,6 +9,7 @@
 package ija.map.map_src;
 
 import ija.map.map_src.Coordinate;
+import ija.map.map_src.Street;
 
 /**
  * Representing the Stop within the Street.
@@ -17,8 +18,10 @@ import ija.map.map_src.Coordinate;
 public class Stop {
     /// Name of the stop
     private final String name;
-    /// Possition of the stop
+    /// Position of the stop
     private Coordinate coordinate;
+    /// Street where is stop 
+    private Street street;
 
     public Stop(String name, Coordinate coordinate){
         this.name = name;
@@ -41,6 +44,22 @@ public class Stop {
         return coordinate;
     }
 
+    /**
+     * Setter for street.
+     * @param street the street to set
+     */
+    public void setStreet(Street street) {
+        this.street = street;
+    }
+
+    /**
+     * Getter for street.
+     * @return the street
+     */
+    public Street getStreet() {
+        return street;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -56,6 +75,7 @@ public class Stop {
         int hash = 1;
         hash = hash * 42 + this.name.hashCode();
         hash = hash * 42 + this.coordinate.hashCode();
+        hash = hash * 42 + (this.street == null ? 0 : this.street.hashCode());
         return hash;
     }
 }

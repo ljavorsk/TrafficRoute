@@ -48,7 +48,7 @@ public class Street {
     }
 
     /**
-     * Getter for the list of Coordinates of the street. First one is the beggining and the last one is the end of the street
+     * Getter for the list of Coordinates of the street. First one is the beginning and the last one is the end of the street
      * @return List if Coordinates
      */
     public List<Coordinate> getCoordinates() {
@@ -108,7 +108,7 @@ public class Street {
 
     /**
      * Return the begin of the street
-     * @return beggining Coordinate
+     * @return beginning Coordinate
      */
     public Coordinate beginOfTheStreet() {
         List<Coordinate> street_coords = this.getCoordinates();
@@ -142,7 +142,7 @@ public class Street {
      * Sets the value of traffic overload on the street
      * @param value One of the values - 1 (minimal), 2, 3, 4 (maximal)
      */
-    public setTraficOverload(short value){
+    public void setTrafficOverload(short value){
         this.traffic_overload = value;
     }
 
@@ -150,7 +150,7 @@ public class Street {
      * Getter for the traffic_overload
      * @return One of the values - 1 (minimal), 2, 3, 4 (maximal)
      */
-    public short getTraficOverload(){
+    public short getTrafficOverload(){
         return this.traffic_overload;
     }
 
