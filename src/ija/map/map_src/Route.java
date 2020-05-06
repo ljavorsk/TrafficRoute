@@ -70,7 +70,7 @@ public class Route{
      * @return Route object, or null in case that the streets are not connected, or starting_point is not the beginning
      * or end of the first street in the streets
      */
-    public Route defaultRoute(List<Street> streets, List<Stop> stops_to_visit, Coordinate starting_point){
+    public static Route defaultRoute(List<Street> streets, List<Stop> stops_to_visit, Coordinate starting_point){
         if (!(starting_point == streets.get(0).beginOfTheStreet() || starting_point == streets.get(0).endOfTheStreet())){
             return null;
         }

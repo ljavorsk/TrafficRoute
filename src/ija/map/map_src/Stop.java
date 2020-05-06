@@ -26,6 +26,7 @@ public class Stop {
     }
 
     /**
+     * Getter for name.
      * @return the name
      */
     public String getName() {
@@ -33,6 +34,7 @@ public class Stop {
     }
 
     /**
+     * Getter for coordinate.
      * @return the coordinate
      */
     public Coordinate getCoordinate() {
