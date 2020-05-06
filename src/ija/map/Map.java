@@ -8,6 +8,9 @@
 
 package ija.map;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ija.map.map_src.Coordinate;
 import ija.map.map_src.Line;
 import ija.map.map_src.Stop;

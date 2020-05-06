@@ -22,7 +22,7 @@ public class Coordinate{
     }
 
     /**
-     * Public contructor function
+     * Public constructor function
      * @param x X coordinate
      * @param y Y coordinate
      * @return Assigned coordinate
