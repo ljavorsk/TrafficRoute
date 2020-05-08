@@ -24,13 +24,16 @@ public class Route{
     private List<Stop> stops;
     /// List of the streets within the route in order
     private List<Street> streets;
+    /// Starting point of the route
+    private Coordinate starting_point;
 
     /**
      * Constructor for the Route
      */
-    private Route(List<Street> streets_to_visit, List<Stop> stops_to_visit, Coordinate starting_point){
+    private Route(List<Street> streets_to_visit, List<Stop> stops_to_visit, Coordinate starting_p){
         this.stops = stops_to_visit;
         this.streets = streets_to_visit;
+        this.starting_point = starting_p;
         Coordinate street_start_point = starting_point;
 
         // Fill the route
@@ -114,6 +117,14 @@ public class Route{
     }
 
     /**
+     * Getter for the starting point of the route
+     * @return Starting point of the route
+     */
+    public Coordinate getStartingPoint(){
+        return this.starting_point;
+    }
+
+    /**
      * Getter for the starting position position
      * @return Where the route starts
      */
@@ -130,7 +141,33 @@ public class Route{
         int index = this.route.indexOf(current_position);
 
         if (index != -1){
-            return this.route.get(index + 1);
+            // Is there something next?
+            if (index < this.route.size()){
+                return this.route.get(index + 1);
+            }
+            return null;
+        }
+        else{
+            // The current position is not part of the route
+            return null;
+        }
+    }
+
+    /**
+     * Getter for the previous position of the route
+     * Can be used, when the line reaches the end of the route and wants to go back
+     * @param current_position Current position in route, where the Line is
+     * @return Previous position for Line, or null if the current_position is not part of the route, or there is nothing previous
+     */
+    public SimpleImmutableEntry<Coordinate, Street> getPrevious(SimpleImmutableEntry<Coordinate, Street> current_position){
+        int index = this.route.indexOf(current_position);
+
+        if (index != -1){
+            // Is there something previous?
+            if (index > 0){
+                return this.route.get(index - 1);
+            }
+            return null;
         }
         else{
             // The current position is not part of the route
@@ -172,17 +209,17 @@ public class Route{
 
     /**
      * Recalculate the route with given closed_street and given detour_streets
-     * It replaces the closed_street coordinates within the route with the
-     * new detour_streets coordinates.
+     * It creates new Route with new detoure_streets that replaced closed_street in previous route
      * @param closed_street The street that is closed, and have to be deleted from route
      * @param detour_streets The streets that will be connected to the route.
-     * They have to be ordered and first one needs to be connected to street that was closed
-     * @return true if everything went well, false otherwise
+     * They have to be ordered, first one needs to be connected to street that was closed
+     * and the last one needs to be connected to the other end of the closed_street
+     * @return New Route object, or null if anything went wrong
      */
-    public boolean detourRoute(Street closed_street, Street... detour_streets){
+    public Route detourRoute(Street closed_street, Street... detour_streets){
         // Closed street is not part of the route
         if (!this.streets.contains(closed_street)){
-            return false;
+            return null;
         }
 
         Coordinate first_connection_coordinate = null;
@@ -206,11 +243,7 @@ public class Route{
         if (!(first_connection_coordinate.equals(new_first_street.beginOfTheStreet()) ||
             first_connection_coordinate.equals(new_first_street.endOfTheStreet()))){
             // It's not correctly connected
-            return false;
-        } else {
-            // It is connected, so delete blocked street coordinates
-            // Using lambdas to delete any coordinate with closed street
-            this.route.removeIf(n -> Objects.equals(n, closed_street));
+            return null;
         }
 
         // Now when the route has deleted the closed route, index points to beggining of the street
@@ -218,25 +251,19 @@ public class Route{
         if (!(this.route.get(index_where_add).getKey().equals(new_last_street.beginOfTheStreet()) || 
             this.route.get(index_where_add).getKey().equals(new_last_street.endOfTheStreet()))){
             // It's not correctly connected
-            return false;
+            return null;
         }
 
-        // Start filling the coordinates to the route
+        // Add new streets in route
+        int street_index = this.streets.indexOf(closed_street);
         for (Street street : list_of_streets) {
-            boolean backwards_coordinates = false;
-
-            // We are going from end of the street to the beginning, so coordinates have to be reordered
-            if (first_connection_coordinate.equals(s.endOfTheStreet())){
-                // Set flag
-                backwards_coordinates = true;
-            }
-            // Increment the index, so the street goes in order
-            first_connection_coordinate = addStreetToRoute(s, backwards_coordinates, index_where_add++);
+            this.streets.add(street_index++, street);
         }
 
-        // TODO delete Street and add new streets?
-        // What to do with Stops
+        // Delete the closed street
+        this.streets.remove(closed_street);
 
-        return true;
+        // Create new Route with edited streets
+        return new Route(this.streets, this.stops, this.starting_point);
     }
 }
