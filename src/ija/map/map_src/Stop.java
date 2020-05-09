@@ -19,6 +19,8 @@ public class Stop {
     private final String name;
     /// Possition of the stop
     private Coordinate coordinate;
+    /// Street in which is the stop located
+    private Street street;
 
     public Stop(String name, Coordinate coordinate){
         this.name = name;
@@ -39,6 +41,22 @@ public class Stop {
      */
     public Coordinate getCoordinate() {
         return coordinate;
+    }
+
+    /**
+     * Getter for the stop's street
+     * @return Stop's street
+     */
+    public Street getStreet(){
+        return this.street;
+    }
+
+    /**
+     * Setter for the stop's street
+     * @param s Street to be set
+     */
+    public setStreet(Street s){
+        this.street = s;
     }
 
     @Override
