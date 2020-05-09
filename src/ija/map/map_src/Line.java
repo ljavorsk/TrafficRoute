@@ -17,14 +17,14 @@ import ija.map.map_src.Stop;
 import ija.map.map_src.Route;
 
 public class Line{
-    private final float move_about = 1;
+    private final float move_by = 1;
     private final int id;
     private SimpleImmutableEntry<Coordinate, Street> actual_position;
     private SimpleImmutableEntry<Coordinate, Street> navigation_point;
     private Route route;
     private float x_vector;
     private float y_vector;
-    private float move_coeficient;
+    private float move_coefficient;
 
     /**
      * Constructor
@@ -43,9 +43,9 @@ public class Line{
 
     /**
      * Prepare link for traffic.
-     * @param streets Which streets does the route cointain, must be ordered
+     * @param streets Which streets does the route contain, must be ordered
      * @param stops Which stops does the route contain, must be ordered
-     * @param starting_point Wehre does the route begins
+     * @param starting_point Where does the route begins
      * @return true if streets and stops are ordered, else false
      */
     public boolean prepare(List<Street> streets, List<Stop> stops, Coordinate starting_point){
@@ -69,18 +69,18 @@ public class Line{
             x_vector = this.navigation_point.getKey().getX() - this.actual_position.getKey().getX();
             y_vector = this.navigation_point.getKey().getY() - this.actual_position.getKey().getY();
             if(x_vector != 0 && y_vector != 0){
-                this.move_coeficient = (float) Math.sqrt(x_vector*x_vector + y_vector*y_vector);
+                this.move_coefficient = (float) Math.sqrt(x_vector*x_vector + y_vector*y_vector);
             }
         }
         float new_x = this.actual_position.getKey().getX();
         float new_y = this.actual_position.getKey().getY();
         if(x_vector == 0){
-            new_y += this.move_about;
+            new_y += this.move_by;
         }else if(y_vector == 0){
-            new_x += this.move_about;
+            new_x += this.move_by;
         }else{
-            new_x = (this.move_about / this.move_coeficient) * new_x;
-            new_y = (this.move_about / this.move_coeficient) * new_y;
+            new_x = (this.move_by / this.move_coefficient) * new_x;
+            new_y = (this.move_by / this.move_coefficient) * new_y;
         }
         this.actual_position = new SimpleImmutableEntry<Coordinate, Street>(Coordinate.create(new_x, new_y),this.actual_position.getValue());
         return getCoordinate();

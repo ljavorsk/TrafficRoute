@@ -1,0 +1,29 @@
+[
+    {
+        "id" : 58,
+        "streets" :
+            [
+                "Nogradyho",
+                "Novozamocka"
+            ],
+        "stops" :
+            [
+                "Cervinkova",
+                "Nerudova",
+                "Semilaso"
+            ]
+    },
+    {
+        "id" : 9,
+        "streets" :
+            [
+                "Novozamocka"
+            ],
+        "stops" :
+            [
+                "Nerudova",
+                "Technologicky park",
+                "Semilaso"
+            ]
+    }
+]
