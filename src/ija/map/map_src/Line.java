@@ -17,15 +17,22 @@ import ija.map.map_src.Stop;
 import ija.map.map_src.Route;
 
 public class Line{
-    private final float move_by = 1;
+    /// Constant for line to move by value.
+    private final float move_by_constant = 1;
+    /// Constant for waiting time on stop.
+    private final int waiting_constant = 5;
+
+    /// Unique identification.
     private final int id;
+    /// Actual position of line.
     private SimpleImmutableEntry<Coordinate, Street> actual_position;
+    /// Nearest navigation point which line can cross.
     private SimpleImmutableEntry<Coordinate, Street> navigation_point;
+    /// Route handler.
     private Route route;
-    private float x_vector;
-    private float y_vector;
-    private float move_coefficient;
+    /// Flag if line is going from start to end of in opposite direction.
     private boolean start_2_end = true;
+    /// How many time must line wait until can move.
     private int waiting_time = 0;
 
     /**
@@ -96,36 +103,56 @@ public class Line{
         this.set_direction();
         // Check if line reach navigation point.
         if(this.actual_position.getKey().equals(this.navigation_point.getKey())){
+            // Set actual reached street.
             this.actual_position.setValue(this.navigation_point.getValue());
             if(start_2_end){
                 this.navigation_point = this.route.getNext(this.navigation_point);
             }else{
                 this.navigation_point = this.route.getPrevious(this.navigation_point);
+                // Set actual reached street.
+                this.actual_position.setValue(this.navigation_point.getValue());
             }
-            x_vector = this.navigation_point.getKey().getX() - this.actual_position.getKey().getX();
-            y_vector = this.navigation_point.getKey().getY() - this.actual_position.getKey().getY();
-            if(x_vector != 0 && y_vector != 0){
-                this.move_coefficient = (float) Math.sqrt(x_vector*x_vector + y_vector*y_vector);
+            //Check if line isn`t on some stop.
+            for(Stop stop : this.route.getStops()){
+                if(stop.getCoordinate().equals(this.actual_position.getKey())){
+                    this.waiting_time = this.waiting_constant;
+                    break;
+                }
             }
         }
         float new_x = this.actual_position.getKey().getX();
         float new_y = this.actual_position.getKey().getY();
+        // X value of vector which line used for move.
+        float x_vector = this.navigation_point.getKey().getX() - new_x;
+        // Y value of vector which line used for move.
+        float y_vector = this.navigation_point.getKey().getY() - new_y;
+        // Distance between actual position and navigation point.
+        float distance_2_navig_point;
         if(x_vector == 0){
-            new_y += this.move_by;
+            distance_2_navig_point = Math.abs(new_y - this.navigation_point.getKey().getY());
+            if(distance_2_navig_point > this.move_by_constant){
+                new_y = this.navigation_point.getKey().getY();
+            }else{
+                new_y += this.move_by_constant;
+            }
         }else if(y_vector == 0){
-            new_x += this.move_by;
+            distance_2_navig_point = Math.abs(new_x - this.navigation_point.getKey().getX());
+            if(distance_2_navig_point > this.move_by_constant){
+                new_x = this.navigation_point.getKey().getX();
+            }else{
+                new_x += this.move_by_constant;
+            }
         }else{
-            new_x = (this.move_by / this.move_coefficient) * new_x;
-            new_y = (this.move_by / this.move_coefficient) * new_y;
-        }
-        this.actual_position = new SimpleImmutableEntry<Coordinate, Street>(Coordinate.create(new_x, new_y),this.actual_position.getValue());
-        //Check if line isn`t on some stop.
-        for(Stop stop : this.route.getStops()){
-            if(stop.getCoordinate().equals(this.actual_position.getKey())){
-                this.waiting_time = 5;
-                break;
+            distance_2_navig_point = (float) Math.sqrt(x_vector*x_vector + y_vector*y_vector);
+            if(distance_2_navig_point > this.move_by_constant){
+                new_x = navigation_point.getKey().getX();
+                new_y = navigation_point.getKey().getY();
+            }else{
+                new_x = (this.move_by_constant / distance_2_navig_point) * new_x;
+                new_y = (this.move_by_constant / distance_2_navig_point) * new_y;
             }
         }
+        this.actual_position = new SimpleImmutableEntry<Coordinate, Street>(Coordinate.create(new_x, new_y),this.actual_position.getValue());
         return getCoordinate();
     }
 
