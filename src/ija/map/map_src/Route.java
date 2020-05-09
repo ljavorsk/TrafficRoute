@@ -45,7 +45,7 @@ public class Route{
                 // Set flag
                 backwards_coordinates = true;
             }
-            street_start_point = addStreetToRoute(s, backwards_coordinates, -1);
+            street_start_point = addStreetToRoute(s, backwards_coordinates);
         }
     }
 
@@ -81,10 +81,9 @@ public class Route{
      * If the index parameter is given (not -1), it adds it to given index (used in detour_route func)
      * @param s Street to add
      * @param reorder_coordinates If the coordinates needs to be reordered
-     * @param index Index, where you want to add the Street in route, fill -1 if you don't want to use index
      * @return Last coordinate added to the route
      */
-    private Coordinate addStreetToRoute(Street s, boolean reorder_coordinates, int index){
+    private Coordinate addStreetToRoute(Street s, boolean reorder_coordinates){
         List<Coordinate> coordinates_in_street = s.getCoordinates();
         Coordinate last_coordinate = null;
 
@@ -97,17 +96,11 @@ public class Route{
 
                 // Backwards iteration
                 for (int i = tmp_route.size(); i-- > 0;){
-                    if (index != -1){
-                        this.route.add(index, tmp_route.get(i));
-                    }
                     this.route.add(tmp_route.get(i));
                 }
             }
             else {
                 // Just add position to the route
-                if (index != -1){
-                    this.route.add(index, tmp_position);
-                }
                 this.route.add(tmp_position);
             }
             last_coordinate = current_c; 
@@ -211,12 +204,12 @@ public class Route{
      * Recalculate the route with given closed_street and given detour_streets
      * It creates new Route with new detoure_streets that replaced closed_street in previous route
      * @param closed_street The street that is closed, and have to be deleted from route
-     * @param detour_streets The streets that will be connected to the route.
+     * @param list_of_streets The streets that will be connected to the route.
      * They have to be ordered, first one needs to be connected to street that was closed
      * and the last one needs to be connected to the other end of the closed_street
      * @return New Route object, or null if anything went wrong
      */
-    public Route detourRoute(Street closed_street, Street... detour_streets){
+    public Route detourRoute(Street closed_street, List<Street> list_of_streets){
         // Closed street is not part of the route
         if (!this.streets.contains(closed_street)){
             return null;
@@ -235,7 +228,6 @@ public class Route{
             }
         }
 
-        List<Street> list_of_streets = Arrays.asList(detour_streets);
         Street new_first_street = list_of_streets.get(0);
         Street new_last_street = list_of_streets.get(list_of_streets.size() - 1);
         

@@ -9,8 +9,9 @@
 package ija.map.map_src;
 
 public class Coordinate{
-
+    /// X value of Coordinate
     private float x_coordinate;
+    /// Y value of Coordinate
     private float y_coordinate;
 
     /**
