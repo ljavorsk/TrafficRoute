@@ -25,6 +25,8 @@ public class Line{
     private float x_vector;
     private float y_vector;
     private float move_coefficient;
+    private boolean start_2_end = true;
+    private int waiting_time = 0;
 
     /**
      * Constructor
@@ -39,6 +41,34 @@ public class Line{
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * Getter for actual street where line is.
+     * @return street
+     */
+    public Street getStreet(){
+        return this.actual_position.getValue();
+    }
+
+    /**
+     * Getter for actual link coordinate.
+     * @return coordinate
+     */
+    public Coordinate getCoordinate(){
+        return this.actual_position.getKey();
+    }
+
+    /**
+     * If line must wait on stop it decrement parameter waiting_time.
+     * @return true if line must wait on stop, otherwise false
+     */
+    public boolean wait_on_stop() {
+        if(this.waiting_time != 0){
+            this.waiting_time--;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -63,9 +93,15 @@ public class Line{
      * @return actual coordinate
      */
     public Coordinate move(){
+        this.set_direction();
         // Check if line reach navigation point.
         if(this.actual_position.getKey().equals(this.navigation_point.getKey())){
-            this.navigation_point = this.route.getNext(this.navigation_point);
+            this.actual_position.setValue(this.navigation_point.getValue());
+            if(start_2_end){
+                this.navigation_point = this.route.getNext(this.navigation_point);
+            }else{
+                this.navigation_point = this.route.getPrevious(this.navigation_point);
+            }
             x_vector = this.navigation_point.getKey().getX() - this.actual_position.getKey().getX();
             y_vector = this.navigation_point.getKey().getY() - this.actual_position.getKey().getY();
             if(x_vector != 0 && y_vector != 0){
@@ -83,22 +119,27 @@ public class Line{
             new_y = (this.move_by / this.move_coefficient) * new_y;
         }
         this.actual_position = new SimpleImmutableEntry<Coordinate, Street>(Coordinate.create(new_x, new_y),this.actual_position.getValue());
+        //Check if line isn`t on some stop.
+        for(Stop stop : this.route.getStops()){
+            if(stop.getCoordinate().equals(this.actual_position.getKey())){
+                this.waiting_time = 5;
+                break;
+            }
+        }
         return getCoordinate();
     }
 
     /**
-     * Getter for actual street where line is.
-     * @return street
+     * Check if line is on start of her route or on end. It change value of flag start_2_end.
      */
-    public Street getStreet(){
-        return this.actual_position.getValue();
-    }
-
-    /**
-     * Getter for actual link coordinate.
-     * @return coordinate
-     */
-    public Coordinate getCoordinate(){
-        return this.actual_position.getKey();
+    private void set_direction(){
+        List<Stop> stops = this.route.getStops();
+        Coordinate start_coordinate = stops.get(0).getCoordinate();
+        Coordinate end_coordinate = stops.get(stops.size()-1).getCoordinate();
+        if(this.actual_position.equals(start_coordinate)){
+            this.start_2_end = true;
+        }else if(this.actual_position.equals(end_coordinate)){
+            this.start_2_end = false;
+        }
     }
 }
