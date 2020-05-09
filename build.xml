@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="run" name="TraficRoute Semestral project for IJA">
+    <target name="run" depends="compile">
+        <java classname="ija.Main">
+            <classpath path="build"/>
+        </java>
+    </target>
+    <target name="compile">
+        <javac includeantruntime="false" srcdir="./src"  destdir="build"/>
+    </target>
+</project>
+
