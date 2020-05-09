@@ -8,9 +8,6 @@
 
 package ija.map.map_src;
 
-import ija.map.map_src.Coordinate;
-import ija.map.map_src.Street;
-
 /**
  * Representing the Stop within the Street.
  * Stop have it's own unique ID, representing Coordinates.
@@ -20,7 +17,7 @@ public class Stop {
     private final String name;
     /// Position of the stop
     private Coordinate coordinate;
-    /// Street where is stop 
+    /// Street in which is the stop located
     private Street street;
 
     public Stop(String name, Coordinate coordinate){
@@ -45,19 +42,19 @@ public class Stop {
     }
 
     /**
-     * Setter for street.
-     * @param street the street to set
+     * Getter for the stop's street
+     * @return Stop's street
      */
-    public void setStreet(Street street) {
-        this.street = street;
+    public Street getStreet(){
+        return this.street;
     }
 
     /**
-     * Getter for street.
-     * @return the street
+     * Setter for the stop's street
+     * @param s Street to be set
      */
-    public Street getStreet() {
-        return street;
+    public void setStreet(Street s){
+        this.street = s;
     }
 
     @Override

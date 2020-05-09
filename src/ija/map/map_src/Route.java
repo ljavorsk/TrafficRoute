@@ -9,8 +9,8 @@
 package ija.map.map_src;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
 /**
@@ -224,7 +224,7 @@ public class Route{
 
         Coordinate first_connection_coordinate = null;
         // Index where the new coordinates will be added (closed street starting point)
-        int index_where_add = null;
+        int index_where_add = -1;
 
         for (SimpleImmutableEntry<Coordinate, Street> position_to_be_deleted : this.route) {
             // Find first occurrence of the closed street (connecting Coordinate)
