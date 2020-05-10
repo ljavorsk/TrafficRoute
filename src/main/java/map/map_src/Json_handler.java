@@ -4,7 +4,8 @@
  * (C) Lukas Javorsky (xjavor20)
  * (C) Patrik Ondriga (xondri08)
  * 
- */
+ *//*
+
 
 package ija.map.map_src;
 
@@ -18,26 +19,30 @@ import ija.map.map_src.Stop;
 import ija.map.map_src.Street;
 import lib.org.json.simple.JSONArray; 
 import lib.org.json.simple.JSONObject; 
-import lib.org.json.simple.parser.*; 
+import lib.org.json.simple.parser.*;
 import java.io.FileReader;
 
 public class Json_handler{
     /// For store and get lists of streets, stops and lines.
     private static Map map;
 
-    /**
+    */
+/**
      * Constructor
      * @param map
-     */
+     *//*
+
     public Json_handler(Map map){
         this.map = map;
     }
 
-    /**
+    */
+/**
      * Load data about streets and stops from json file. That data store into the list of streets and stops.
      * @param streets_file json file
      * @return true if loading data was successful, otherwise false
-     */
+     *//*
+
     public boolean load_streets(String streets_file){
         String street_name;
         List<Coordinate> street_coordinates = new ArrayList<>();
@@ -74,22 +79,26 @@ public class Json_handler{
         return true;
     }
 
-    /**
+    */
+/**
      * Create coordinate object with data from json file.
      * @param coordinate_json json object with x and y information
      * @return null if x or y isn`t in interval <0, inf), otherwise object of type Coordinate
-     */
+     *//*
+
     private Coordinate create_coordinate(JSONObject coordinate_json){
         float x = (float) coordinate_json.get("x");
         float y = (float) coordinate_json.get("y");
         return Coordinate.create(x, y);
     }
 
-    /**
+    */
+/**
      * Create stop object with data from json file.
      * @param stop_json json object with information about stop
      * @return null if x or y isn`t in interval <0, inf), otherwise object of type Stop
-     */
+     *//*
+
     private Stop create_stop(JSONObject stop_json){
         Coordinate coordinate = create_coordinate((JSONObject) stop_json.get("coordinates"));
         if(coordinate == null){
@@ -98,11 +107,13 @@ public class Json_handler{
         return new Stop((String) stop_json.get("name"), coordinate);
     }
 
-    /**
+    */
+/**
      * Load data about lines from json file. That data store into the list of lines.
      * @param lines_file json file
      * @return true if loading data was successful, otherwise false
-     */
+     *//*
+
     public boolean load_lines(String lines_file){
         long line_id;
         List<String> street_list = new ArrayList<>();
@@ -138,13 +149,15 @@ public class Json_handler{
         return true;
     }
 
-    /**
+    */
+/**
      * Prepare line for her first move.
      * @param line for prepare
      * @param streets which line crossing
      * @param stops where line stopping
      * @return true if prepare was successful, otherwise false
-     */
+     *//*
+
     private boolean prepare_line(Line line, List<String> streets, List<String> stops){
         List<Street> street_list = new ArrayList<>();
         List<Stop> stop_list = new ArrayList<>();
@@ -178,4 +191,4 @@ public class Json_handler{
         }
         return line.prepare(street_list, stop_list, stop_list.get(0).getCoordinate());
     }
-}
+}*/
