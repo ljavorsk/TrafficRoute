@@ -26,6 +26,8 @@ public class Street {
     private List<Stop> list_of_stops = new ArrayList<Stop>();
     /// How much traffic is at the road. Values are 1,2,3,4. Default value is 1 (minimal). 
     private short traffic_overload = 1;
+    /// Value if street is closed or opend.
+    private boolean closed = false;
 
     /**
      * Constructor for the Street
@@ -62,6 +64,28 @@ public class Street {
      */
     public List<Stop> getStops() {
         return this.list_of_stops;
+    }
+
+    /**
+     * Getter for information if street is closed.
+     * @return true if it`s closed, otherwise false
+     */
+    public boolean isClosed(){
+        return this.closed;
+    }
+
+    /**
+     * Open street.
+     */
+    public void open_street(){
+        this.closed = false;
+    }
+
+    /**
+     * Close street.
+     */
+    public void close_street(){
+        this.closed = true;
     }
 
     /**

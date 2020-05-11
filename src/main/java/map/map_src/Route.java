@@ -118,6 +118,14 @@ public class Route{
     }
 
     /**
+     * Getter for the ending point of the route
+     * @return Ending point of the route
+     */
+    public Coordinate getEndingPoint(){
+        return this.stops.get(this.stops.size()-1).getCoordinate();
+    }
+
+    /**
      * Getter for the starting position position
      * @return Where the route starts
      */
