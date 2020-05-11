@@ -67,7 +67,7 @@ public class Route{
 
             // Are the given streets connected?
             if (previous_street != null){
-                if (s.follows(previous_street)){
+                if (!s.follows(previous_street)){
                     return null;
                 }
             }

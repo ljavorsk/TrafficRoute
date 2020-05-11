@@ -42,7 +42,7 @@ public class JsonHandler {
     public boolean loadStreets(String streets_file){
         String street_name;
         List<Coordinate> street_coordinates = new ArrayList<>();
-        List<Stop> street_stops = new ArrayList<>();
+        Street new_street;
         try {
             Object street_obj = new JSONParser().parse(new FileReader(streets_file));         
             JSONArray streets = (JSONArray) street_obj;
@@ -50,7 +50,6 @@ public class JsonHandler {
             for(Object object : streets){
                 JSONObject street = (JSONObject) object;
                 street_coordinates.clear();
-                street_stops.clear();
                 street_name = (String) street.get("name");
                 //For loop via all coordinates for one street.
                 for(Object coordinate_obj : (JSONArray) street.get("coordinates")){
@@ -59,15 +58,17 @@ public class JsonHandler {
                         return false;
                     }
                 }
+                new_street = new Street(street_name, street_coordinates);
                 //For loop via all stops for one street.
                 for(Object stop_obj : (JSONArray) street.get("stops")){
                     Stop stop = createStop((JSONObject) stop_obj);
                     if(stop == null){
                         return false;
                     }
-                    map.getStops().add(stop);
-                    street_stops.add(stop);
+                    this.map.getStops().add(stop);
+                    new_street.addStop(stop);
                 }
+                this.map.getStreets().add(new_street);
             }
         } catch (Exception e) {
             return false;
@@ -82,8 +83,8 @@ public class JsonHandler {
      * @return null if x or y isn`t in interval <0, inf), object of type Coordinate otherwise
      */
     private Coordinate createCoordinate(JSONObject coordinate_json){
-        float x = (float) coordinate_json.get("x");
-        float y = (float) coordinate_json.get("y");
+        float x = Float.valueOf(coordinate_json.get("x").toString());
+        float y = Float.valueOf(coordinate_json.get("y").toString());
         return Coordinate.create(x, y);
     }
 
@@ -119,7 +120,7 @@ public class JsonHandler {
                 JSONObject line = (JSONObject) object;
                 line_id = (long) line.get("id");
                 //Create new Line object and add him into the list of lines.
-                map.getLines().add(new Line((int) line_id));
+                this.map.getLines().add(new Line((int) line_id));
                 street_list.clear();
                 JSONArray streets = (JSONArray) line.get("streets");
                 //For loop via all streets for one line.
@@ -132,7 +133,7 @@ public class JsonHandler {
                 for(Object stop_obj : stops){
                     stop_list.add((String) stop_obj);
                 }
-                if(!prepareLine(map.getLines().get(map.getLines().size()-1), street_list, stop_list)){
+                if(!prepareLine(this.map.getLines().get(this.map.getLines().size()-1), street_list, stop_list)){
                     return false;
                 }
             }   
@@ -156,7 +157,7 @@ public class JsonHandler {
         //Find streets by they names.
         for(String street_name : streets){
             boolean street_found_flag = false;
-            for(Street street : map.getStreets()) {
+            for(Street street : this.map.getStreets()) {
                 if (street.getId().equals(street_name)) {
                     street_list.add(street);
                     street_found_flag = true;
@@ -170,7 +171,7 @@ public class JsonHandler {
         //Find stops by they names.
         for(String stop_name : stops){
             boolean stop_found_flag = false;
-            for(Stop stop : map.getStops()) {
+            for(Stop stop : this.map.getStops()) {
                 if (stop.getName().equals(stop_name)) {
                     stop_list.add(stop);
                     stop_found_flag = true;

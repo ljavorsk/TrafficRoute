@@ -32,13 +32,13 @@ public class Street {
     /**
      * Constructor for the Street
      * @param id ID of the street
-     * @param coordinates Coordinates that represents the street,
+     * @param coordinates List of coordinates that represents the street,
      * there have to be stops coordinates and coordinates where new streets are connected.
      * @return The created street
      */
-    public Street(String id, Coordinate... coordinates){
+    public Street(String id, List<Coordinate> coordinates){
         this.id_str = id;
-        this.list_of_coordinates = Arrays.asList(coordinates);
+        this.list_of_coordinates = new ArrayList<>(coordinates);
     }
 
     /**
@@ -154,7 +154,8 @@ public class Street {
         Coordinate beginning_second = s.getCoordinates().get(0);
         Coordinate end_second = s.getCoordinates().get(s.getCoordinates().size() -1);
 
-        if (beginning_first.equals(end_second) || beginning_second.equals(end_first)){
+        if (beginning_first.equals(end_second) || beginning_second.equals(end_first) ||
+        beginning_first.equals(beginning_second) || end_first.equals(end_second)){
             return true;
         }
         else {
