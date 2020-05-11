@@ -13,6 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import map.Map;
+
+import java.io.File;
+
 public class Main extends Application {
 
     @Override
@@ -22,5 +26,9 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        Map map = new Map("Brno");
+        boolean result = map.load_data("./data/street.json", "./data/line.json");
+        System.out.println(result);
     }
 }
