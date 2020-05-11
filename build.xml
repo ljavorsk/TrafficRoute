@@ -14,7 +14,7 @@
         <javac target="${version}" source="${version}" classpath="${libdir}/json-simple-1.1.jar" includeantruntime="false" srcdir="${srcdir}"  destdir="${builddir}"/>
         <jar destfile="${destdir}/${project}.jar" basedir="${builddir}" >
             <fileset dir="${srcdir}/main/resources"/>
-            <fileset dir="${builddir}/classes"/>
+            <fileset dir="${builddir}"/>
             <manifest>
                 <attribute name="Main-Class" value="Main"/>
             </manifest>
