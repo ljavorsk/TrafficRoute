@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="run" name="TraficRoute Semestral project for IJA">
+    <property name="srcdir" location="src" />
+    <property name="builddir" location="build" />
+    <property name="destdir" location="dest" />
+    <property name="libdir" location="lib" />
+    <property name="version" value="1.8" />
+    <property name="project" value="ija-app" />
+
     <target name="run" depends="compile">
-        <java classname="Main">
-            <classpath path="build"/>
-        </java>
+        <java jar="${destdir}/${project}.jar" fork="true"/>
     </target>
     <target name="compile">
-        <javac target="1.8" source="1.8" classpath="lib/json-simple-1.1.jar" includeantruntime="false" srcdir="./src"  destdir="build"/>
+        <javac target="${version}" source="${version}" classpath="${libdir}/json-simple-1.1.jar" includeantruntime="false" srcdir="${srcdir}"  destdir="${builddir}"/>
+        <jar destfile="${destdir}/${project}.jar" basedir="${builddir}" >
+            <fileset dir="${srcdir}/main/resources"/>
+            <fileset dir="${builddir}/classes"/>
+            <manifest>
+                <attribute name="Main-Class" value="Main"/>
+            </manifest>
+        </jar>
     </target>
 </project>
 
