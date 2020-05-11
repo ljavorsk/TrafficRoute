@@ -75,14 +75,14 @@ public class Street {
     }
 
     /**
-     * Open street.
+     * Open street. Set closed to false.
      */
     public void open_street(){
         this.closed = false;
     }
 
     /**
-     * Close street.
+     * Close street. Set closed to true.
      */
     public void close_street(){
         this.closed = true;

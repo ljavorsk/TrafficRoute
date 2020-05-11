@@ -32,6 +32,7 @@ public class Line{
 
     /**
      * Constructor
+     * @param id Int id is unique identification for lines
      */
     public Line(int id){
         this.id = id;
@@ -39,7 +40,7 @@ public class Line{
 
     /**
      * Getter for link id.
-     * @return id
+     * @return the link id
      */
     public int getId() {
         return id;
@@ -47,7 +48,7 @@ public class Line{
 
     /**
      * Getter for actual street where line is.
-     * @return street
+     * @return the actual positions street
      */
     public Street getStreet(){
         return this.actual_position.getValue();
@@ -55,7 +56,7 @@ public class Line{
 
     /**
      * Getter for actual link coordinate.
-     * @return coordinate
+     * @return the actual positions coordinate
      */
     public Coordinate getCoordinate(){
         return this.actual_position.getKey();
@@ -71,9 +72,9 @@ public class Line{
 
     /**
      * If line must wait on stop it decrement parameter waiting_time.
-     * @return true if line must wait on stop, otherwise false
+     * @return true if line must wait on stop, false otherwise
      */
-    public boolean wait_on_stop() {
+    public boolean waitOnStop() {
         if(this.waiting_time != 0){
             this.waiting_time--;
             return true;
@@ -86,7 +87,7 @@ public class Line{
      * @param streets Which streets does the route contain, must be ordered
      * @param stops Which stops does the route contain, must be ordered
      * @param starting_point Where does the route begins
-     * @return true if streets and stops are ordered, else false
+     * @return true if streets and stops are ordered, false otherwise
      */
     public boolean prepare(List<Street> streets, List<Stop> stops, Coordinate starting_point){
         this.route = Route.defaultRoute(streets, stops, starting_point);
@@ -100,13 +101,13 @@ public class Line{
 
     /**
      * Move with line on its route.
-     * @return actual coordinate
+     * @return actual positions coordinate
      */
     public Coordinate move(){
         if(this.actual_position.getValue().isClosed()){
             return this.actual_position.getKey();
         }
-        this.set_direction();
+        this.setDirection();
         // Check if line reach navigation point.
         if(this.actual_position.getKey().equals(this.navigation_point.getKey())){
             // Set actual reached street.
@@ -162,7 +163,7 @@ public class Line{
     /**
      * Check if line is on start of her route or on end. It change value of flag start_2_end.
      */
-    private void set_direction(){
+    private void setDirection(){
         if(this.actual_position.equals(this.route.getStartingPoint())){
             this.start_2_end = true;
         }else if(this.actual_position.equals(this.route.getEndingPoint())){
@@ -172,7 +173,7 @@ public class Line{
 
     /**
      * Recalculate the route with given closed_street and given detour_streets.
-     * @param closed_street The street that is closed, and have to be deleted from route
+     * @param closed_street The street that is closed, and have to be deleted from route.
      * @param list_of_streets The streets that will be connected to the route.
      * They have to be ordered, first one needs to be connected to street that was closed
      * and the last one needs to be connected to the other end of the closed_street.

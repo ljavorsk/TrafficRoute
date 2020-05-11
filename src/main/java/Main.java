@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import map.Map;
 
 public class Main extends Application {
 
@@ -22,5 +23,8 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        Map map = new Map("Brno");
+        map.loadData("data/streets.json", "data/streets.json");
     }
 }
