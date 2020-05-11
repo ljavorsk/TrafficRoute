@@ -7,14 +7,22 @@
     <property name="version" value="1.8" />
     <property name="project" value="ija-app" />
 
+    <path id="classpath">
+        <fileset dir="${libdir}" includes="*.jar"/>
+    </path>
+
     <target name="run" depends="compile">
-        <java jar="${destdir}/${project}.jar" fork="true"/>
+        <java fork="true" classname="Main">
+            <classpath>
+                <path refid="classpath" />
+                <path location="${destdir}/${project}.jar" />
+            </classpath>
+        </java>
     </target>
     <target name="compile">
-        <javac target="${version}" source="${version}" classpath="${libdir}/json-simple-1.1.jar" includeantruntime="false" srcdir="${srcdir}"  destdir="${builddir}"/>
+        <javac target="${version}" source="${version}" classpathref="classpath" includeantruntime="false" srcdir="${srcdir}"  destdir="${builddir}"/>
         <jar destfile="${destdir}/${project}.jar" basedir="${builddir}" >
             <fileset dir="${srcdir}/main/resources"/>
-            <fileset dir="${builddir}"/>
             <manifest>
                 <attribute name="Main-Class" value="Main"/>
             </manifest>
