@@ -7,16 +7,11 @@
  *//*
 
 
-package ija.map.map_src;
+package map.map_src;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ija.map.Map;
-import ija.map.map_src.Coordinate;
-import ija.map.map_src.Line;
-import ija.map.map_src.Stop;
-import ija.map.map_src.Street;
 import lib.org.json.simple.JSONArray; 
 import lib.org.json.simple.JSONObject; 
 import lib.org.json.simple.parser.*;
