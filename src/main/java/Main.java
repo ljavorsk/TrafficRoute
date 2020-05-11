@@ -28,7 +28,7 @@ public class Main extends Application {
         primaryStage.show();
 
         Map map = new Map("Brno");
-        boolean result = map.load_data("./data/street.json", "./data/line.json");
+        boolean result = map.loadData("./data/street.json", "./data/line.json");
         System.out.println(result);
     }
 }

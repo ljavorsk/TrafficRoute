@@ -67,7 +67,7 @@ public class Route{
 
             // Are the given streets connected?
             if (previous_street != null){
-                if (s.follows(previous_street)){
+                if (!s.follows(previous_street)){
                     return null;
                 }
             }
@@ -115,6 +115,14 @@ public class Route{
      */
     public Coordinate getStartingPoint(){
         return this.starting_point;
+    }
+
+    /**
+     * Getter for the ending point of the route
+     * @return Ending point of the route
+     */
+    public Coordinate getEndingPoint(){
+        return this.stops.get(this.stops.size()-1).getCoordinate();
     }
 
     /**

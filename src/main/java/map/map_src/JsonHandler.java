@@ -19,31 +19,30 @@ import java.io.FileReader;
 
 import map.Map;
 
-public class Json_handler{
+public class JsonHandler {
     /// For store and get lists of streets, stops and lines.
     private Map map;
 
 
-/**
+    /**
      * Constructor
-     * @param map
+     * @param map Object of type map where will be stored loaded data about streets, stops and lines.
      */
-
-    public Json_handler(Map map){
+    public JsonHandler(Map map){
         this.map = map;
     }
 
 
-/**
-     * Load data about streets and stops from json file. That data store into the list of streets and stops.
-     * @param streets_file json file
-     * @return true if loading data was successful, otherwise false
+    /**
+     * Load data about streets and stops from json file. That data store into the list of streets and stops
+     * from object map.
+     * @param streets_file Streets_file is file, that content data about streets
+     * @return true if loading data was successful, false otherwise
      */
-
-    public boolean load_streets(String streets_file){
+    public boolean loadStreets(String streets_file){
         String street_name;
         List<Coordinate> street_coordinates = new ArrayList<>();
-        List<Stop> street_stops = new ArrayList<>();
+        Street new_street;
         try {
             Object street_obj = new JSONParser().parse(new FileReader(streets_file));         
             JSONArray streets = (JSONArray) street_obj;
@@ -51,24 +50,25 @@ public class Json_handler{
             for(Object object : streets){
                 JSONObject street = (JSONObject) object;
                 street_coordinates.clear();
-                street_stops.clear();
                 street_name = (String) street.get("name");
                 //For loop via all coordinates for one street.
                 for(Object coordinate_obj : (JSONArray) street.get("coordinates")){
-                    street_coordinates.add(create_coordinate((JSONObject) coordinate_obj));
+                    street_coordinates.add(createCoordinate((JSONObject) coordinate_obj));
                     if(street_coordinates.get(street_coordinates.size()-1) == null){
                         return false;
                     }
                 }
+                new_street = new Street(street_name, street_coordinates);
                 //For loop via all stops for one street.
                 for(Object stop_obj : (JSONArray) street.get("stops")){
-                    Stop stop = create_stop((JSONObject) stop_obj);
+                    Stop stop = createStop((JSONObject) stop_obj);
                     if(stop == null){
                         return false;
                     }
-                    map.getStops().add(stop);
-                    street_stops.add(stop);
+                    this.map.getStops().add(stop);
+                    new_street.addStop(stop);
                 }
+                this.map.getStreets().add(new_street);
             }
         } catch (Exception e) {
             return false;
@@ -77,27 +77,25 @@ public class Json_handler{
     }
 
 
-/**
+    /**
      * Create coordinate object with data from json file.
-     * @param coordinate_json json object with x and y information
-     * @return null if x or y isn`t in interval <0, inf), otherwise object of type Coordinate
+     * @param coordinate_json Coordinate_json is json object with x and y information
+     * @return null if x or y isn`t in interval <0, inf), object of type Coordinate otherwise
      */
-
-    private Coordinate create_coordinate(JSONObject coordinate_json){
-        float x = (float) coordinate_json.get("x");
-        float y = (float) coordinate_json.get("y");
+    private Coordinate createCoordinate(JSONObject coordinate_json){
+        float x = Float.valueOf(coordinate_json.get("x").toString());
+        float y = Float.valueOf(coordinate_json.get("y").toString());
         return Coordinate.create(x, y);
     }
 
 
-/**
+    /**
      * Create stop object with data from json file.
-     * @param stop_json json object with information about stop
-     * @return null if x or y isn`t in interval <0, inf), otherwise object of type Stop
+     * @param stop_json Stop_json is json object with information about stop
+     * @return null if x or y isn`t in interval <0, inf), object of type Stop otherwise
      */
-
-    private Stop create_stop(JSONObject stop_json){
-        Coordinate coordinate = create_coordinate((JSONObject) stop_json.get("coordinates"));
+    private Stop createStop(JSONObject stop_json){
+        Coordinate coordinate = createCoordinate((JSONObject) stop_json.get("coordinates"));
         if(coordinate == null){
             return null;
         }
@@ -105,13 +103,12 @@ public class Json_handler{
     }
 
 
-/**
-     * Load data about lines from json file. That data store into the list of lines.
-     * @param lines_file json file
-     * @return true if loading data was successful, otherwise false
+    /**
+     * Load data about lines from json file. That data stores into the list of lines.
+     * @param lines_file Lines_file is json, that content data about lines
+     * @return true if loading data was successful, false otherwise
      */
-
-    public boolean load_lines(String lines_file){
+    public boolean loadLines(String lines_file){
         long line_id;
         List<String> street_list = new ArrayList<>();
         List<String> stop_list = new ArrayList<>();
@@ -123,7 +120,7 @@ public class Json_handler{
                 JSONObject line = (JSONObject) object;
                 line_id = (long) line.get("id");
                 //Create new Line object and add him into the list of lines.
-                map.getLines().add(new Line((int) line_id));
+                this.map.getLines().add(new Line((int) line_id));
                 street_list.clear();
                 JSONArray streets = (JSONArray) line.get("streets");
                 //For loop via all streets for one line.
@@ -136,7 +133,7 @@ public class Json_handler{
                 for(Object stop_obj : stops){
                     stop_list.add((String) stop_obj);
                 }
-                if(!prepare_line(map.getLines().get(map.getLines().size()-1), street_list, stop_list)){
+                if(!prepareLine(this.map.getLines().get(this.map.getLines().size()-1), street_list, stop_list)){
                     return false;
                 }
             }   
@@ -147,43 +144,42 @@ public class Json_handler{
     }
 
 
-/**
+    /**
      * Prepare line for her first move.
-     * @param line for prepare
-     * @param streets which line crossing
-     * @param stops where line stopping
-     * @return true if prepare was successful, otherwise false
+     * @param line Line is object which will be prepare for use
+     * @param streets Streets is list of streets which line crossing
+     * @param stops Stops is list of stops where line will stopping
+     * @return true if prepare was successful, false otherwise
      */
-
-    private boolean prepare_line(Line line, List<String> streets, List<String> stops){
+    private boolean prepareLine(Line line, List<String> streets, List<String> stops){
         List<Street> street_list = new ArrayList<>();
         List<Stop> stop_list = new ArrayList<>();
         //Find streets by they names.
         for(String street_name : streets){
             boolean street_found_flag = false;
-            for(Street street : map.getStreets()){
-                if(street.getId().equals(street_name)){
+            for(Street street : this.map.getStreets()) {
+                if (street.getId().equals(street_name)) {
                     street_list.add(street);
                     street_found_flag = true;
                     break;
                 }
-                if(!street_found_flag){
-                    return false;
-                }
+            }
+            if(!street_found_flag) {
+                return false;
             }
         }
         //Find stops by they names.
         for(String stop_name : stops){
             boolean stop_found_flag = false;
-            for(Stop stop : map.getStops()){
-                if(stop.getName().equals(stop_name)){
+            for(Stop stop : this.map.getStops()) {
+                if (stop.getName().equals(stop_name)) {
                     stop_list.add(stop);
                     stop_found_flag = true;
                     break;
                 }
-                if(!stop_found_flag){
-                    return false;
-                }
+            }
+            if(!stop_found_flag){
+                return false;
             }
         }
         return line.prepare(street_list, stop_list, stop_list.get(0).getCoordinate());
