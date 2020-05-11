@@ -6,7 +6,7 @@
  * 
  */
 
-package ija.map.map_src;
+package map.map_src;
 
 /**
  * Representing the Stop within the Street.

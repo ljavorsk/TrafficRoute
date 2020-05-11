@@ -6,15 +6,10 @@
  * 
  */
 
-package ija.map.map_src;
+package map.map_src;
 
 import java.util.List;
 import java.util.AbstractMap.SimpleImmutableEntry;
-
-import ija.map.map_src.Coordinate;
-import ija.map.map_src.Street;
-import ija.map.map_src.Stop;
-import ija.map.map_src.Route;
 
 public class Line{
     /// Constant for line to move by value.

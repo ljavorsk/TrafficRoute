@@ -7,16 +7,16 @@
  *//*
 
 
-package ija.map;
+package map;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import ija.map.map_src.Line;
-import ija.map.map_src.Stop;
-import ija.map.map_src.Street;
-import ija.map.map_src.Json_handler;
+import map.map_src.Stop;
+import map.map_src.Line;
+import map.map_src.Street;
+import map.map_src.Json_handler;
 
 */
 /**
