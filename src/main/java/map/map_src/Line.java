@@ -8,27 +8,20 @@
 
 package map.map_src;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
 public class Line{
     /// Constant for line to move by value.
     private final float move_by_constant = 1;
-    /// Constant for waiting time on stop.
-    private final int waiting_constant = 5;
 
     /// Unique identification.
     private final int id;
-    /// Actual position of line.
-    private SimpleImmutableEntry<Coordinate, Street> actual_position;
-    /// Nearest navigation point which line can cross.
-    private SimpleImmutableEntry<Coordinate, Street> navigation_point;
     /// Route handler.
     private Route route;
-    /// Flag if line is going from start to end of in opposite direction.
-    private boolean start_2_end = true;
-    /// How many time must line wait until can move.
-    private int waiting_time = 0;
+    /// List of buses.
+    private final List<Bus> buses = new ArrayList<>();
 
     /**
      * Constructor
@@ -47,22 +40,6 @@ public class Line{
     }
 
     /**
-     * Getter for actual street where line is.
-     * @return the actual positions street
-     */
-    public Street getStreet(){
-        return this.actual_position.getValue();
-    }
-
-    /**
-     * Getter for actual link coordinate.
-     * @return the actual positions coordinate
-     */
-    public Coordinate getCoordinate(){
-        return this.actual_position.getKey();
-    }
-
-    /**
      * Getter for all stops that line have.
      * @return list of stops
      */
@@ -71,15 +48,11 @@ public class Line{
     }
 
     /**
-     * If line must wait on stop it decrement parameter waiting_time.
-     * @return true if line must wait on stop, false otherwise
+     * Getter for all buses on line.
+     * @return list of buses
      */
-    public boolean waitOnStop() {
-        if(this.waiting_time != 0){
-            this.waiting_time--;
-            return true;
-        }
-        return false;
+    public List<Bus> getBuses() {
+        return this.buses;
     }
 
     /**
@@ -94,80 +67,96 @@ public class Line{
         if(this.route == null){
             return false;
         }
-        this.actual_position = this.route.getFirst();
-        this.navigation_point = this.actual_position;
+        this.buses.add(new Bus(String.valueOf(this.buses.size()+1), this.route.getFirst()));
+        this.buses.get(0).setNavigationPoint(this.route.getFirst());
         return true;
     }
 
     /**
-     * Move with line on its route.
-     * @return actual positions coordinate
+     * Create new bus on this line, that will start at begin of route.
      */
-    public Coordinate move(){
-        if(this.actual_position.getValue().isClosed()){
-            return this.actual_position.getKey();
+    public void createBus(){
+        this.buses.add(new Bus(String.valueOf(this.buses.size()+1), this.route.getFirst()));
+    }
+
+    /**
+     * Move with all buses on line.
+     */
+    public void move(){
+        for(Bus bus : this.buses){
+            this.moveWithBus(bus);
         }
-        this.setDirection();
-        // Check if line reach navigation point.
-        if(this.actual_position.getKey().equals(this.navigation_point.getKey())){
+    }
+
+    /**
+     * Move with bus.
+     * @param bus Which bus is moving.
+     */
+    public void moveWithBus(Bus bus){
+        if(bus.getStreet().isClosed()){
+            return;
+        }
+        this.setDirection(bus);
+        // Check if bus reach navigation point.
+        if(bus.getPosition().equals(bus.getNavigationPoint().getKey())){
             // Set actual reached street.
-            this.actual_position.setValue(this.navigation_point.getValue());
-            if(start_2_end){
-                this.navigation_point = this.route.getNext(this.navigation_point);
+            bus.setStreet(bus.getNavigationPoint().getValue());
+            if(bus.isStart2end()){
+                bus.setNavigationPoint(this.route.getNext(bus.getNavigationPoint()));
             }else{
-                this.navigation_point = this.route.getPrevious(this.navigation_point);
+                bus.setNavigationPoint(this.route.getPrevious(bus.getNavigationPoint()));
                 // Set actual reached street.
-                this.actual_position.setValue(this.navigation_point.getValue());
+                bus.setStreet(bus.getNavigationPoint().getValue());
             }
-            //Check if line isn`t on some stop.
-            if(route.shouldStop(this.actual_position.getKey())) {
-                this.waiting_time = this.waiting_constant;
+            //Check if bus isn`t on some stop.
+            if(route.shouldStop(bus.getPosition())) {
+                bus.setWaitingTime();
             }
         }
-        float new_x = this.actual_position.getKey().getX();
-        float new_y = this.actual_position.getKey().getY();
+        float new_x = bus.getPosition().getX();
+        float new_y = bus.getPosition().getY();
         // X value of vector which line used for move.
-        float x_vector = this.navigation_point.getKey().getX() - new_x;
+        float x_vector = bus.getNavigationPoint().getKey().getX() - new_x;
         // Y value of vector which line used for move.
-        float y_vector = this.navigation_point.getKey().getY() - new_y;
+        float y_vector = bus.getNavigationPoint().getKey().getY() - new_y;
         // Distance between actual position and navigation point.
         float distance_2_navig_point;
         if(x_vector == 0){
-            distance_2_navig_point = Math.abs(new_y - this.navigation_point.getKey().getY());
+            distance_2_navig_point = Math.abs(new_y - bus.getNavigationPoint().getKey().getY());
             if(distance_2_navig_point > this.move_by_constant){
-                new_y = this.navigation_point.getKey().getY();
+                new_y = bus.getNavigationPoint().getKey().getY();
             }else{
                 new_y += this.move_by_constant;
             }
         }else if(y_vector == 0){
-            distance_2_navig_point = Math.abs(new_x - this.navigation_point.getKey().getX());
+            distance_2_navig_point = Math.abs(new_x - bus.getNavigationPoint().getKey().getX());
             if(distance_2_navig_point > this.move_by_constant){
-                new_x = this.navigation_point.getKey().getX();
+                new_x = bus.getNavigationPoint().getKey().getX();
             }else{
                 new_x += this.move_by_constant;
             }
         }else{
             distance_2_navig_point = (float) Math.sqrt(x_vector*x_vector + y_vector*y_vector);
             if(distance_2_navig_point > this.move_by_constant){
-                new_x = navigation_point.getKey().getX();
-                new_y = navigation_point.getKey().getY();
+                new_x = bus.getNavigationPoint().getKey().getX();
+                new_y = bus.getNavigationPoint().getKey().getY();
             }else{
                 new_x = (this.move_by_constant / distance_2_navig_point) * new_x;
                 new_y = (this.move_by_constant / distance_2_navig_point) * new_y;
             }
         }
-        this.actual_position = new SimpleImmutableEntry<Coordinate, Street>(Coordinate.create(new_x, new_y),this.actual_position.getValue());
-        return getCoordinate();
+        bus.setPosition(Coordinate.create(new_x, new_y));
     }
 
     /**
-     * Check if line is on start of her route or on end. It change value of flag start_2_end.
+     * Check if bus is on start of her route or on end. It change value of flag start_2_end.
+     * @param bus Bus for which is set direction.
      */
-    private void setDirection(){
-        if(this.actual_position.equals(this.route.getStartingPoint())){
-            this.start_2_end = true;
-        }else if(this.actual_position.equals(this.route.getEndingPoint())){
-            this.start_2_end = false;
+    private void setDirection(Bus bus){
+        if(bus.getPosition().equals(this.route.getStartingPoint())){
+            bus.setStart2end(true);
+        }else if(bus.getPosition().equals(this.route.getEndingPoint())){
+            bus.setStart2end(false);
         }
     }
 
