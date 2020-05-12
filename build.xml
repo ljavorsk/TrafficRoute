@@ -3,7 +3,6 @@
     <property name="srcdir" location="src" />
     <property name="builddir" location="build" />
     <property name="destdir" location="dest" />
-    <property name="datadir" location="data" />
     <property name="libdir" location="lib" />
     <property name="version" value="1.8" />
     <property name="project" value="ija-app" />
@@ -24,7 +23,6 @@
         <javac target="${version}" source="${version}" classpathref="classpath" includeantruntime="false" srcdir="${srcdir}"  destdir="${builddir}"/>
         <jar destfile="${destdir}/${project}.jar" basedir="${builddir}" >
             <fileset dir="${srcdir}/main/resources"/>
-            <fileset dir="${datadir}"/>
             <manifest>
                 <attribute name="Main-Class" value="Main"/>
             </manifest>

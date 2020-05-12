@@ -15,10 +15,13 @@ import javafx.stage.Stage;
 
 import map.Map;
 
-import java.io.File;
-
+/**
+ * Main application class
+ * Displays everything to the user
+ */
 public class Main extends Application {
 
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout.fxml"));
