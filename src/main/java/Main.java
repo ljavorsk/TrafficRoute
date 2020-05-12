@@ -15,8 +15,6 @@ import javafx.stage.Stage;
 
 import map.Map;
 
-import java.io.File;
-
 public class Main extends Application {
 
     @Override
