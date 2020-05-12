@@ -32,6 +32,7 @@ public class Line{
 
     /**
      * Constructor
+     * @param id Int id is unique identification for lines
      */
     public Line(int id){
         this.id = id;
@@ -39,7 +40,7 @@ public class Line{
 
     /**
      * Getter for link id.
-     * @return id
+     * @return the link id
      */
     public int getId() {
         return id;
@@ -47,7 +48,7 @@ public class Line{
 
     /**
      * Getter for actual street where line is.
-     * @return street
+     * @return the actual positions street
      */
     public Street getStreet(){
         return this.actual_position.getValue();
@@ -55,17 +56,25 @@ public class Line{
 
     /**
      * Getter for actual link coordinate.
-     * @return coordinate
+     * @return the actual positions coordinate
      */
     public Coordinate getCoordinate(){
         return this.actual_position.getKey();
     }
 
     /**
-     * If line must wait on stop it decrement parameter waiting_time.
-     * @return true if line must wait on stop, otherwise false
+     * Getter for all stops that line have.
+     * @return list of stops
      */
-    public boolean wait_on_stop() {
+    public List<Stop> getStops(){
+        return this.route.getStops();
+    }
+
+    /**
+     * If line must wait on stop it decrement parameter waiting_time.
+     * @return true if line must wait on stop, false otherwise
+     */
+    public boolean waitOnStop() {
         if(this.waiting_time != 0){
             this.waiting_time--;
             return true;
@@ -78,7 +87,7 @@ public class Line{
      * @param streets Which streets does the route contain, must be ordered
      * @param stops Which stops does the route contain, must be ordered
      * @param starting_point Where does the route begins
-     * @return true if streets and stops are ordered, else false
+     * @return true if streets and stops are ordered, false otherwise
      */
     public boolean prepare(List<Street> streets, List<Stop> stops, Coordinate starting_point){
         this.route = Route.defaultRoute(streets, stops, starting_point);
@@ -92,10 +101,13 @@ public class Line{
 
     /**
      * Move with line on its route.
-     * @return actual coordinate
+     * @return actual positions coordinate
      */
     public Coordinate move(){
-        this.set_direction();
+        if(this.actual_position.getValue().isClosed()){
+            return this.actual_position.getKey();
+        }
+        this.setDirection();
         // Check if line reach navigation point.
         if(this.actual_position.getKey().equals(this.navigation_point.getKey())){
             // Set actual reached street.
@@ -108,11 +120,8 @@ public class Line{
                 this.actual_position.setValue(this.navigation_point.getValue());
             }
             //Check if line isn`t on some stop.
-            for(Stop stop : this.route.getStops()){
-                if(stop.getCoordinate().equals(this.actual_position.getKey())){
-                    this.waiting_time = this.waiting_constant;
-                    break;
-                }
+            if(route.shouldStop(this.actual_position.getKey())) {
+                this.waiting_time = this.waiting_constant;
             }
         }
         float new_x = this.actual_position.getKey().getX();
@@ -154,14 +163,29 @@ public class Line{
     /**
      * Check if line is on start of her route or on end. It change value of flag start_2_end.
      */
-    private void set_direction(){
-        List<Stop> stops = this.route.getStops();
-        Coordinate start_coordinate = stops.get(0).getCoordinate();
-        Coordinate end_coordinate = stops.get(stops.size()-1).getCoordinate();
-        if(this.actual_position.equals(start_coordinate)){
+    private void setDirection(){
+        if(this.actual_position.equals(this.route.getStartingPoint())){
             this.start_2_end = true;
-        }else if(this.actual_position.equals(end_coordinate)){
+        }else if(this.actual_position.equals(this.route.getEndingPoint())){
             this.start_2_end = false;
         }
     }
+
+    /**
+     * Recalculate the route with given closed_street and given detour_streets.
+     * @param closed_street The street that is closed, and have to be deleted from route.
+     * @param list_of_streets The streets that will be connected to the route.
+     * They have to be ordered, first one needs to be connected to street that was closed
+     * and the last one needs to be connected to the other end of the closed_street.
+     * @return true, or false if anything went wrong
+     */
+    public boolean detour(Street closed_street, List<Street> list_of_streets){
+        Route new_route = this.route.detourRoute(closed_street, list_of_streets);
+        if(new_route == null){
+            return false;
+        }
+        this.route = new_route;
+        return true;
+    }
+
 }

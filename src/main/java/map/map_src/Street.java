@@ -26,17 +26,19 @@ public class Street {
     private List<Stop> list_of_stops = new ArrayList<Stop>();
     /// How much traffic is at the road. Values are 1,2,3,4. Default value is 1 (minimal). 
     private short traffic_overload = 1;
+    /// Value if street is closed or opend.
+    private boolean closed = false;
 
     /**
      * Constructor for the Street
      * @param id ID of the street
-     * @param coordinates Coordinates that represents the street,
+     * @param coordinates List of coordinates that represents the street,
      * there have to be stops coordinates and coordinates where new streets are connected.
      * @return The created street
      */
-    public Street(String id, Coordinate... coordinates){
+    public Street(String id, List<Coordinate> coordinates){
         this.id_str = id;
-        this.list_of_coordinates = Arrays.asList(coordinates);
+        this.list_of_coordinates = new ArrayList<>(coordinates);
     }
 
     /**
@@ -62,6 +64,28 @@ public class Street {
      */
     public List<Stop> getStops() {
         return this.list_of_stops;
+    }
+
+    /**
+     * Getter for information if street is closed.
+     * @return true if it`s closed, otherwise false
+     */
+    public boolean isClosed(){
+        return this.closed;
+    }
+
+    /**
+     * Open street. Set closed to false.
+     */
+    public void open_street(){
+        this.closed = false;
+    }
+
+    /**
+     * Close street. Set closed to true.
+     */
+    public void close_street(){
+        this.closed = true;
     }
 
     /**
@@ -130,7 +154,8 @@ public class Street {
         Coordinate beginning_second = s.getCoordinates().get(0);
         Coordinate end_second = s.getCoordinates().get(s.getCoordinates().size() -1);
 
-        if (beginning_first.equals(end_second) || beginning_second.equals(end_first)){
+        if (beginning_first.equals(end_second) || beginning_second.equals(end_first) ||
+        beginning_first.equals(beginning_second) || end_first.equals(end_second)){
             return true;
         }
         else {
