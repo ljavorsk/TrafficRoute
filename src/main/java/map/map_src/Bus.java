@@ -8,17 +8,26 @@
 
 package map.map_src;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents the Bus vehicle that is an object within Line
  * Bus has it's own id, position and speed
  */
-public class Bus {
+public class Bus implements Drawable{
     /// Unique ID of the Bus
     private final String id;
     /// Current position of the Bus
     private Coordinate position;
     /// Current speed of the Bus
     private double speed;
+    /// Shapes in GUI
+    private final List<Shape> shape;
 
     /**
      * Constructor
@@ -30,6 +39,8 @@ public class Bus {
         this.id = id;
         this.position = position;
         this.speed = speed;
+        shape = new ArrayList<>();
+        shape.add(new Circle(position.getX(), position.getY(), 10, Color.GREEN));
     }
 
     /**
@@ -70,5 +81,10 @@ public class Bus {
      */
     public double getSpeed() {
         return speed;
+    }
+
+    @Override
+    public List<Shape> getShapes() {
+        return shape;
     }
 }
