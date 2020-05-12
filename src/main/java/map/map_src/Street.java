@@ -8,22 +8,26 @@
 
 package map.map_src;
 
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
+
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 
 /**
  * Represents the Street in the Map.
  * The Street have it's unique ID, representing Coordinates, and may have Stops
  */
-public class Street {
+public class Street implements Drawable{
     /// Unique street's name
-    private String id_str;
+    private final String id_str;
     /// Ordered coordinates that represents the street
-    private List<Coordinate> list_of_coordinates;
+    private final List<Coordinate> list_of_coordinates;
     /// Stops that are located on the street
-    private List<Stop> list_of_stops = new ArrayList<Stop>();
+    private final List<Stop> list_of_stops = new ArrayList<Stop>();
     /// How much traffic is at the road. Values are 1,2,3,4. Default value is 1 (minimal). 
     private short traffic_overload = 1;
     /// Value if street is closed or opend.
@@ -179,5 +183,21 @@ public class Street {
         return this.traffic_overload;
     }
 
+    @Override
+    public List<Shape> getShapes() {
+        List<Shape> street_shape = new ArrayList<>();
+        street_shape.add(new Text(Math.abs((beginOfTheStreet().getX() + endOfTheStreet().getX()))/2,
+                Math.abs((beginOfTheStreet().getY() + endOfTheStreet().getY()))/2, id_str));
+
+        for (int i = 0; i < list_of_coordinates.size(); i++) {
+            Coordinate first = list_of_coordinates.get(i);
+            Coordinate second = null;
+            if (list_of_coordinates.size() > i + 1) {
+                second = list_of_coordinates.get(i + 1);
+                street_shape.add(new Line(first.getX(), first.getY(), second.getX(), second.getY()));
+            }
+        }
+        return street_shape;
+    }
 }
 
