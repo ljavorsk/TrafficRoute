@@ -58,7 +58,9 @@ public class Route{
      * or end of the first street in the streets
      */
     public static Route defaultRoute(List<Street> streets, List<Stop> stops_to_visit, Coordinate starting_point){
-        if (!(starting_point.equals(streets.get(0).beginOfTheStreet()) || starting_point.equals(streets.get(0).endOfTheStreet()))){
+        // Route have to start in the first stop in stops_to_visit
+        if (!(starting_point.equals(stops_to_visit.get(0).getCoordinate()))){
+            System.out.println("2");
             return null;
         }
 

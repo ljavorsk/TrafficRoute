@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Circle?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="597.0" prefWidth="784.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
    <center>
@@ -13,11 +12,7 @@
          <content>
             <Group>
                <children>
-                  <Pane fx:id="main_content" onScroll="#zoom" prefHeight="1000.0" prefWidth="1000.0">
-                     <children>
-                        <Circle fill="DODGERBLUE" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
-                     </children>
-                  </Pane>
+                  <Pane fx:id="main_content" onScroll="#zoom" prefHeight="1000.0" prefWidth="1000.0" />
                </children>
             </Group>
          </content>
