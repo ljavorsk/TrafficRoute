@@ -19,13 +19,13 @@ import java.util.AbstractMap.SimpleImmutableEntry;
  */
 public class Route{
     /// Route that the Line will take
-    private List<SimpleImmutableEntry<Coordinate, Street>> route;
+    private final List<SimpleImmutableEntry<Coordinate, Street>> route = new ArrayList<>();
     /// List of the stops within the route
-    private List<Stop> stops;
+    private final List<Stop> stops;
     /// List of the streets within the route in order
-    private List<Street> streets;
+    private final List<Street> streets;
     /// Starting point of the route
-    private Coordinate starting_point;
+    private final Coordinate starting_point;
 
     /**
      * Constructor for the Route
@@ -234,6 +234,11 @@ public class Route{
                 first_connection_coordinate = position_to_be_deleted.getKey();
                 break;
             }
+        }
+
+        // The coordinate is not there
+        if (first_connection_coordinate == null){
+            return null;
         }
 
         Street new_first_street = list_of_streets.get(0);
