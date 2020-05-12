@@ -83,8 +83,8 @@ public class JsonHandler {
      * @return null if x or y isn`t in interval <0, inf), object of type Coordinate otherwise
      */
     private Coordinate createCoordinate(JSONObject coordinate_json){
-        float x = Float.valueOf(coordinate_json.get("x").toString());
-        float y = Float.valueOf(coordinate_json.get("y").toString());
+        float x = Float.parseFloat(coordinate_json.get("x").toString());
+        float y = Float.parseFloat(coordinate_json.get("y").toString());
         return Coordinate.create(x, y);
     }
 
