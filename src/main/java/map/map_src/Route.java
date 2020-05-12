@@ -1,6 +1,6 @@
 /*
  * Source code for the final IJA project
- * Line class
+ * Route class
  * (C) Lukas Javorsky (xjavor20)
  * (C) Patrik Ondriga (xondri08)
  * 
