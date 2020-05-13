@@ -144,9 +144,7 @@ public class Map extends Thread {
      */
     private void oneMove(){
         for(Line line : this.lines){
-            if(!line.waitOnStop()){
-                line.move();
-            }
+            line.move();
         }
     }
 
