@@ -13,9 +13,6 @@ import java.util.List;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
 public class Line{
-    /// Constant for line to move by value.
-    private final float move_by_constant = 1;
-
     /// Unique identification.
     private final int id;
     /// Route handler.
@@ -84,7 +81,9 @@ public class Line{
      */
     public void move(){
         for(Bus bus : this.buses){
-            this.moveWithBus(bus);
+            if(!bus.waitOnStop()){
+                this.moveWithBus(bus);
+            }
         }
     }
 
@@ -92,13 +91,10 @@ public class Line{
      * Move with bus.
      * @param bus Which bus is moving.
      */
-    public void moveWithBus(Bus bus){
-        if(bus.getStreet().isClosed()){
-            return;
-        }
+    private void moveWithBus(Bus bus){
         this.setDirection(bus);
         // Check if bus reach navigation point.
-        if(bus.getPosition().equals(bus.getNavigationPoint().getKey())){
+        while(bus.getPosition().equals(bus.getNavigationPoint().getKey())){
             // Set actual reached street.
             bus.setStreet(bus.getNavigationPoint().getValue());
             if(bus.isStart2end()){
@@ -113,6 +109,10 @@ public class Line{
                 bus.setWaitingTime();
             }
         }
+        if(bus.getStreet().isClosed()){
+            return;
+        }
+        float move_by = this.setSpeed(bus.getStreet().getTrafficOverload());
         float new_x = bus.getPosition().getX();
         float new_y = bus.getPosition().getY();
         // X value of vector which line used for move.
@@ -123,26 +123,26 @@ public class Line{
         float distance_2_navig_point;
         if(x_vector == 0){
             distance_2_navig_point = Math.abs(new_y - bus.getNavigationPoint().getKey().getY());
-            if(distance_2_navig_point > this.move_by_constant){
+            if(distance_2_navig_point < move_by){
                 new_y = bus.getNavigationPoint().getKey().getY();
             }else{
-                new_y += this.move_by_constant;
+                new_y += move_by;
             }
         }else if(y_vector == 0){
             distance_2_navig_point = Math.abs(new_x - bus.getNavigationPoint().getKey().getX());
-            if(distance_2_navig_point > this.move_by_constant){
+            if(distance_2_navig_point < move_by){
                 new_x = bus.getNavigationPoint().getKey().getX();
             }else{
-                new_x += this.move_by_constant;
+                new_x += move_by;
             }
         }else{
             distance_2_navig_point = (float) Math.sqrt(x_vector*x_vector + y_vector*y_vector);
-            if(distance_2_navig_point > this.move_by_constant){
+            if(distance_2_navig_point < move_by){
                 new_x = bus.getNavigationPoint().getKey().getX();
                 new_y = bus.getNavigationPoint().getKey().getY();
             }else{
-                new_x = (this.move_by_constant / distance_2_navig_point) * new_x;
-                new_y = (this.move_by_constant / distance_2_navig_point) * new_y;
+                new_x = (move_by / distance_2_navig_point) * new_x;
+                new_y = (move_by / distance_2_navig_point) * new_y;
             }
         }
         bus.setPosition(Coordinate.create(new_x, new_y));
@@ -177,4 +177,21 @@ public class Line{
         return true;
     }
 
+    /**
+     * Set bus speed by traffic overload.
+     * @param traffic_overload Traffic overload by which is choose bus speed.
+     * @return 1, 0.8, 0.6 or 0.4. It depend on traffic overload.
+     */
+    private float setSpeed(int traffic_overload){
+        switch (traffic_overload){
+            case 1:
+                return 1f;
+            case 2:
+                return 0.8f;
+            case 3:
+                return 0.6f;
+            default:
+                return 0.4f;
+        }
+    }
 }
