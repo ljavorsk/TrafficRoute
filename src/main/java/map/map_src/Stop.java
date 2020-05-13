@@ -8,15 +8,23 @@
 
 package map.map_src;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Representing the Stop within the Street.
  * Stop have it's own unique ID, representing Coordinates.
  */
-public class Stop {
+public class Stop implements Drawable{
     /// Name of the stop
     private final String name;
     /// Position of the stop
-    private Coordinate coordinate;
+    private final Coordinate coordinate;
     /// Street in which is the stop located
     private Street street;
 
@@ -74,5 +82,18 @@ public class Stop {
         hash = hash * 42 + this.coordinate.hashCode();
         hash = hash * 42 + (this.street == null ? 0 : this.street.hashCode());
         return hash;
+    }
+
+    @Override
+    public List<Shape> getShapes() {
+        List<Shape> stop_shape = new ArrayList<>();
+        Text text = new Text(coordinate.getX() -  ((float) name.length()*2), coordinate.getY() - 10, name);
+        text.setFill(Color.RED);
+        text.setStyle("-fx-font: 9 arial;");
+        text.setOpacity(0.7);
+        stop_shape.add(text);
+        stop_shape.add(new Circle(coordinate.getX(), coordinate.getY(), 5, Color.RED));
+
+        return stop_shape;
     }
 }
