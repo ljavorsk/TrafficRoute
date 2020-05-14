@@ -75,6 +75,17 @@ public class Route{
             previous_street = s;
         }
 
+        // Check if the stops are located in the streets
+        int stop_count = stops_to_visit.size();
+        for (Stop stop : stops_to_visit){
+            for (Street street: streets) {
+                if (stop.getStreet().equals(street))
+                    stop_count--;
+            }
+        }
+        if (stop_count != 0)
+            return null;
+
         return new Route(streets, stops_to_visit, starting_point);
     }
 
