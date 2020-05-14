@@ -34,20 +34,18 @@ public class Route{
         this.stops = stops_to_visit;
         this.streets = streets_to_visit;
         this.starting_point = starting_p;
-        Coordinate street_start_point = starting_point;
+        Coordinate new_street_start_point = starting_point;
 
         // Fill the route
         for (Street s : streets) {
-
-
             boolean backwards_coordinates = false;
 
             // We are going from end of the street to the beginning, so coordinates have to be reordered
-            if (street_start_point.equals(s.endOfTheStreet())){
+            if (new_street_start_point.equals(s.endOfTheStreet())){
                 // Set flag
                 backwards_coordinates = true;
             }
-            street_start_point = addStreetToRoute(s, backwards_coordinates);
+            new_street_start_point = addStreetToRoute(s, backwards_coordinates);
         }
     }
 
@@ -104,14 +102,13 @@ public class Route{
             }
             last_coordinate = current_c; 
         }
-
         if (reorder_coordinates){
             // Backwards iteration
             for (int i = tmp_route.size(); i-- > 0;){
                 this.route.add(tmp_route.get(i));
             }
+            return this.route.get(this.route.size() -1).getKey();
         }
-
         // Return where is the next street starting point
         return last_coordinate;
     }
