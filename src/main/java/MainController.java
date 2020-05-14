@@ -6,14 +6,22 @@
  *
  */
 
+import gui.LineButton;
+import gui.StreetButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import map.Map;
 
 import map.map_src.Drawable;
+import map.map_src.Line;
+import map.map_src.Street;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +38,9 @@ public class MainController {
     /// Text field that shows the speed of the time
     @FXML
     private TextField time_speed_text;
+    /// Vbox field for show streets and lines
+    @FXML
+    private VBox vbox_line_stop;
     /// Items that will be drawn on Map
     private List<Drawable> drawings = new ArrayList<>();
     /// Timer in map
@@ -41,6 +52,10 @@ public class MainController {
     /// Indicates if the simulation is running
     private boolean is_running = false;
 
+    private List<LineButton> lineButtons = new ArrayList<>();
+    private List<StreetButton> streetButtons = new ArrayList<>();
+    private final ToggleGroup line_group = new ToggleGroup();
+    private final ToggleGroup street_group = new ToggleGroup();
 
 
     /**
@@ -103,6 +118,22 @@ public class MainController {
         }
     }
 
+    @FXML
+    private void showLines(){
+        vbox_line_stop.getChildren().clear();
+        for(Button button : this.lineButtons){
+            vbox_line_stop.getChildren().add(button);
+        }
+    }
+
+    @FXML
+    private void showStreets(){
+        vbox_line_stop.getChildren().clear();
+        for(Button button : this.streetButtons){
+            vbox_line_stop.getChildren().add(button);
+        }
+    }
+
     /**
      * Resolves how to start the simulation with right time frame
      */
@@ -126,6 +157,7 @@ public class MainController {
         for (Drawable element : drawings) {
             main_content.getChildren().addAll(element.getShapes());
         }
+
     }
 
     /**
@@ -147,5 +179,17 @@ public class MainController {
                 }
             }
         }, 0, (long) (1000 / time_speed));
+    }
+
+
+    public void setRightScreen(){
+        for(Line line : this.map.getLines()){
+            LineButton lineButton = new LineButton(line);
+            lineButtons.add(lineButton);
+        }
+        for(Street street : this.map.getStreets()){
+            StreetButton streetButton = new StreetButton(street);
+            this.streetButtons.add(streetButton);
+        }
     }
 }
