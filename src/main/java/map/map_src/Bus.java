@@ -130,7 +130,7 @@ public class Bus implements Drawable{
      */
     public void setWaitingTime(){
         // Constant for waiting time on stop.
-        int waiting_constant = 5;
+        int waiting_constant = 2;
         this.waiting_time = waiting_constant;
     }
 

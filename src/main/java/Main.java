@@ -64,6 +64,6 @@ public class Main extends Application {
 
         MainController controller = loader.getController();
         controller.setDrawings(elements);
-        controller.startTime(map);
+        controller.startTime(map, 1);
     }
 }

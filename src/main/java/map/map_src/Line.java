@@ -201,13 +201,13 @@ public class Line{
     private float setSpeed(int traffic_overload){
         switch (traffic_overload){
             case 1:
-                return 5f;
+                return 4f;
             case 2:
-                return 0.8f;
+                return 2.5f;
             case 3:
-                return 0.6f;
+                return 1.5f;
             default:
-                return 0.4f;
+                return 1f;
         }
     }
 
