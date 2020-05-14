@@ -84,7 +84,7 @@
                 "coordinates" :
                 {
                     "x" : 130,
-                    "y" : 400
+                    "y" : 300
                 }
             },
             {
@@ -136,7 +136,7 @@
                     "name" : "Nerudova",
                     "coordinates" : 
                         {
-                            "x" : 300,
+                            "x" : 400,
                             "y" : 200
                         }
                 },
@@ -152,7 +152,7 @@
                     "name" : "Semilaso",
                     "coordinates" : 
                         {
-                            "x" : 140,
+                            "x" : 200,
                             "y" : 300
                         }
                 }
