@@ -9,10 +9,14 @@
 import javafx.fxml.FXML;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import map.Map;
+
 import map.map_src.Drawable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Controls the interaction with the user
@@ -23,6 +27,8 @@ public class MainController {
     private Pane main_content;
     /// Items that will be drawn on Map
     private List<Drawable> drawings = new ArrayList<>();
+    /// Timer in map
+    private Timer clock;
 
     /**
      * Handler for the scroll zooming
@@ -31,7 +37,7 @@ public class MainController {
     @FXML
     private void zoom(ScrollEvent event){
         event.consume();
-        double zoom_by = 0.15;
+        double zoom_by = 0.1;
         double zoom_value = event.getDeltaY() >= 0 ? (1 + zoom_by) : (1 - zoom_by);
 
         main_content.setScaleX(zoom_value * main_content.getScaleX());
@@ -47,5 +53,18 @@ public class MainController {
         for (Drawable element : drawings) {
             main_content.getChildren().addAll(element.getShapes());
         }
+    }
+
+    /**
+     * Starts the simulation
+     */
+    public void startTime(Map m){
+        clock = new Timer(false);
+        clock.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                m.oneMove();
+            }
+        }, 0, 500);
     }
 }
