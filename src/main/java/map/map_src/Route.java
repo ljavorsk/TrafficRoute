@@ -34,20 +34,18 @@ public class Route{
         this.stops = stops_to_visit;
         this.streets = streets_to_visit;
         this.starting_point = starting_p;
-        Coordinate street_start_point = starting_point;
+        Coordinate new_street_start_point = starting_point;
 
         // Fill the route
         for (Street s : streets) {
-
-
             boolean backwards_coordinates = false;
 
             // We are going from end of the street to the beginning, so coordinates have to be reordered
-            if (street_start_point.equals(s.endOfTheStreet())){
+            if (new_street_start_point.equals(s.endOfTheStreet())){
                 // Set flag
                 backwards_coordinates = true;
             }
-            street_start_point = addStreetToRoute(s, backwards_coordinates);
+            new_street_start_point = addStreetToRoute(s, backwards_coordinates);
         }
     }
 
@@ -77,6 +75,17 @@ public class Route{
             previous_street = s;
         }
 
+        // Check if the stops are located in the streets
+        int stop_count = stops_to_visit.size();
+        for (Stop stop : stops_to_visit){
+            for (Street street: streets) {
+                if (stop.getStreet().equals(street))
+                    stop_count--;
+            }
+        }
+        if (stop_count != 0)
+            return null;
+
         return new Route(streets, stops_to_visit, starting_point);
     }
 
@@ -104,14 +113,13 @@ public class Route{
             }
             last_coordinate = current_c; 
         }
-
         if (reorder_coordinates){
             // Backwards iteration
             for (int i = tmp_route.size(); i-- > 0;){
                 this.route.add(tmp_route.get(i));
             }
+            return this.route.get(this.route.size() -1).getKey();
         }
-
         // Return where is the next street starting point
         return last_coordinate;
     }
@@ -274,6 +282,9 @@ public class Route{
 
         // Delete the closed street
         this.streets.remove(closed_street);
+
+        // Delete stops on the closed street
+        stops.removeIf(stop -> stop.getStreet().equals(closed_street));
 
         // Create new Route with edited streets
         return new Route(this.streets, this.stops, this.starting_point);

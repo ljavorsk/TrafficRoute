@@ -14,6 +14,20 @@
             ]
     },
     {
+        "id" : 20,
+        "streets" :
+        [
+            "Nogradyho",
+            "Sturova"
+        ],
+        "stops" :
+        [
+            "Cervinkova",
+            "Skacelova",
+            "Kolejni"
+        ]
+    },
+    {
         "id" : 9,
         "streets" :
             [
@@ -25,5 +39,99 @@
                 "Technologicky park",
                 "Semilaso"
             ]
+    },
+    {
+        "id" : 4,
+        "streets" :
+        [
+            "Panska",
+            "Jablkova",
+            "J. Bottu",
+            "Hillova",
+            "Pieninska"
+        ],
+        "stops" :
+        [
+            "Benova",
+            "Bleskova",
+            "Kralikova",
+            "Centrum"
+        ]
+    },
+    {
+        "id" : 40,
+        "streets" :
+        [
+            "Malikova",
+            "Nogradyho"
+        ],
+        "stops" :
+        [
+            "Jelikova",
+            "Pagacova",
+            "Kopanice",
+            "Skacelova",
+            "Cervinkova"
+        ]
+    },
+    {
+        "id" : 10,
+        "streets" :
+        [
+            "Panska",
+            "Tynska",
+            "Delnicka",
+            "Machova",
+            "Sturova",
+            "Malikova"
+        ],
+        "stops" :
+        [
+            "Benova",
+            "Kvitna",
+            "Dolna",
+            "5. Maja",
+            "Studentska",
+            "Kopanice",
+            "Pagacova",
+            "Jelikova"
+        ]
+    },
+    {
+        "id" : 11,
+        "streets" :
+        [
+            "Pieninska",
+            "Novozamocka",
+            "Sturova",
+            "Machova"
+        ],
+        "stops" :
+        [
+            "Centrum",
+            "Kurtzova",
+            "Technologicky park",
+            "Kolejni",
+            "5. Maja"
+        ]
+    },
+    {
+        "id" : 2,
+        "streets" :
+        [
+            "Machova",
+            "Delnicka",
+            "Tynska",
+            "Jablkova",
+            "J. Bottu",
+            "Hillova"
+        ],
+        "stops" :
+        [
+            "5. Maja",
+            "Dolna",
+            "Kvitna",
+            "Kralikova"
+        ]
     }
 ]
