@@ -10,7 +10,6 @@ package map.map_src;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.AbstractMap.SimpleImmutableEntry;
 
 public class Line{
     /// Unique identification.
@@ -107,6 +106,7 @@ public class Line{
             //Check if bus isn`t on some stop.
             if(route.shouldStop(bus.getPosition())) {
                 bus.setWaitingTime();
+                return;
             }
         }
         if(bus.getStreet().isClosed()){
@@ -123,17 +123,33 @@ public class Line{
         float distance_2_navig_point;
         if(x_vector == 0){
             distance_2_navig_point = Math.abs(new_y - bus.getNavigationPoint().getKey().getY());
-            if(distance_2_navig_point < move_by){
-                new_y = bus.getNavigationPoint().getKey().getY();
-            }else{
-                new_y += move_by;
+            if (y_vector > 0){
+                if(distance_2_navig_point < move_by){
+                    new_y = bus.getNavigationPoint().getKey().getY();
+                }else{
+                    new_y += move_by;
+                }
+            } else {
+                if(distance_2_navig_point < move_by){
+                    new_y = bus.getNavigationPoint().getKey().getY();
+                }else{
+                    new_y -= move_by;
+                }
             }
         }else if(y_vector == 0){
             distance_2_navig_point = Math.abs(new_x - bus.getNavigationPoint().getKey().getX());
-            if(distance_2_navig_point < move_by){
-                new_x = bus.getNavigationPoint().getKey().getX();
-            }else{
-                new_x += move_by;
+            if (x_vector > 0){
+                if(distance_2_navig_point < move_by){
+                    new_x = bus.getNavigationPoint().getKey().getX();
+                }else{
+                    new_x += move_by;
+                }
+            } else {
+                if(distance_2_navig_point < move_by){
+                    new_x = bus.getNavigationPoint().getKey().getX();
+                }else{
+                    new_x -= move_by;
+                }
             }
         }else{
             distance_2_navig_point = (float) Math.sqrt(x_vector*x_vector + y_vector*y_vector);
@@ -141,8 +157,8 @@ public class Line{
                 new_x = bus.getNavigationPoint().getKey().getX();
                 new_y = bus.getNavigationPoint().getKey().getY();
             }else{
-                new_x = (move_by / distance_2_navig_point) * new_x;
-                new_y = (move_by / distance_2_navig_point) * new_y;
+                new_x = (move_by / distance_2_navig_point) * x_vector + new_x;
+                new_y = (move_by / distance_2_navig_point) * y_vector + new_y;
             }
         }
         bus.setPosition(Coordinate.create(new_x, new_y));
@@ -185,7 +201,7 @@ public class Line{
     private float setSpeed(int traffic_overload){
         switch (traffic_overload){
             case 1:
-                return 1f;
+                return 5f;
             case 2:
                 return 0.8f;
             case 3:
@@ -194,4 +210,5 @@ public class Line{
                 return 0.4f;
         }
     }
+
 }
