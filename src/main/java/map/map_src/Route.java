@@ -76,6 +76,7 @@ public class Route{
             }
             previous_street = s;
         }
+
         return new Route(streets, stops_to_visit, starting_point);
     }
 
@@ -120,7 +121,7 @@ public class Route{
      * @return Starting point of the route
      */
     public Coordinate getStartingPoint(){
-        return this.starting_point;
+        return this.stops.get(0).getCoordinate();
     }
 
     /**
@@ -136,7 +137,7 @@ public class Route{
      * @return Where the route starts
      */
     public SimpleImmutableEntry<Coordinate, Street> getFirst(){
-        return this.route.get(0);
+        return new SimpleImmutableEntry<Coordinate, Street>(this.stops.get(0).getCoordinate(), this.stops.get(0).getStreet());
     }
 
     /**

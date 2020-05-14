@@ -43,8 +43,9 @@ public class Bus implements Drawable{
         this.id = id;
         this.current_position = starting_position;
         shapes = new ArrayList<>();
-        shapes.add(new Circle(starting_position.getKey().getX(), starting_position.getKey().getY(), 9, Color.GREEN));
-        shapes.get(0).setOpacity(0.7);
+        Circle circle = new Circle(starting_position.getKey().getX(), starting_position.getKey().getY(), 9, Color.GREEN);
+        circle.setOpacity(0.8);
+        shapes.add(circle);
     }
 
     /**

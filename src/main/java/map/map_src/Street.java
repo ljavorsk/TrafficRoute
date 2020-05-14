@@ -8,6 +8,7 @@
 
 package map.map_src;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
@@ -30,15 +31,16 @@ public class Street implements Drawable{
     private final List<Stop> list_of_stops = new ArrayList<Stop>();
     /// How much traffic is at the road. Values are 1,2,3,4. Default value is 1 (minimal). 
     private short traffic_overload = 1;
-    /// Value if street is closed or opend.
+    /// Value if street is closed or opened.
     private boolean closed = false;
+    /// Street's GUI shape
+    private final List<Shape> street_shape = new ArrayList<>();
 
     /**
      * Constructor for the Street
      * @param id ID of the street
      * @param coordinates List of coordinates that represents the street,
      * there have to be stops coordinates and coordinates where new streets are connected.
-     * @return The created street
      */
     public Street(String id, List<Coordinate> coordinates){
         this.id_str = id;
@@ -185,7 +187,6 @@ public class Street implements Drawable{
 
     @Override
     public List<Shape> getShapes() {
-        List<Shape> street_shape = new ArrayList<>();
         street_shape.add(new Text(Math.abs((beginOfTheStreet().getX() + endOfTheStreet().getX()))/2,
                 Math.abs((beginOfTheStreet().getY() + endOfTheStreet().getY()))/2, id_str));
 
@@ -194,10 +195,50 @@ public class Street implements Drawable{
             Coordinate second = null;
             if (list_of_coordinates.size() > i + 1) {
                 second = list_of_coordinates.get(i + 1);
-                street_shape.add(new Line(first.getX(), first.getY(), second.getX(), second.getY()));
+                Line line = new Line(first.getX(), first.getY(), second.getX(), second.getY());
+                street_shape.add(line);
             }
         }
         return street_shape;
+    }
+
+    /**
+     * Makes the street's shape wider
+     * Also changes the color of the street by it's traffic overload
+     */
+    public void selectStreet(){
+        for (int i = 1; i < street_shape.size(); i++) {
+            Shape line = street_shape.get(i);
+            line.setStrokeWidth(3);
+            switch (traffic_overload){
+                case 1:
+                    line.setStroke(Color.GREEN);
+                    break;
+                case 2:
+                    line.setStroke(Color.YELLOW);
+                    break;
+                case 3:
+                    line.setStroke(Color.ORANGE);
+                    break;
+                case 4:
+                    line.setStroke(Color.RED);
+                    break;
+                default:
+                    line.setStroke(Color.BLACK);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Resets the width of the street to normal
+     */
+    public void deselectStreet(){
+        for (int i = 1; i < street_shape.size(); i++) {
+            Shape line = street_shape.get(i);
+            line.setStrokeWidth(1);
+            line.setStroke(Color.BLACK);
+        }
     }
 }
 

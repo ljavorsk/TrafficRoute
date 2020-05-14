@@ -10,6 +10,7 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -25,8 +26,9 @@ import java.util.List;
  * Displays everything to the user
  */
 public class Main extends Application {
+    /// Controller that controls the application
+    private MainController controller;
 
-    
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout.fxml"));
@@ -38,6 +40,11 @@ public class Main extends Application {
 
         Map map = new Map("Brno");
         boolean result = map.loadData("./data/street.json", "./data/line.json");
+        if (!result){
+            Alert json_error = new Alert(Alert.AlertType.ERROR, "Incorrect JSON file");
+            json_error.showAndWait();
+            primaryStage.close();
+        }
         primaryStage.setTitle("Mapa mesta: " + map.getTownName());
         List<Street> streets = map.getStreets();
         List<Stop> stops = map.getStops();
@@ -62,8 +69,15 @@ public class Main extends Application {
         elements.addAll(streets);
         elements.addAll(stops);
 
-        MainController controller = loader.getController();
+        this.controller = loader.getController();
         controller.setDrawings(elements);
         controller.startTime(map, 1);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        if (controller != null)
+            controller.stopSimulation();
+        super.stop();
     }
 }
