@@ -283,6 +283,9 @@ public class Route{
         // Delete the closed street
         this.streets.remove(closed_street);
 
+        // Delete stops on the closed street
+        stops.removeIf(stop -> stop.getStreet().equals(closed_street));
+
         // Create new Route with edited streets
         return new Route(this.streets, this.stops, this.starting_point);
     }
