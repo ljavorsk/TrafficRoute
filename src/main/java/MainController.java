@@ -41,6 +41,9 @@ public class MainController {
     /// Vbox field for show streets and lines
     @FXML
     private VBox vbox_line_stop;
+    /// Vbox field for streets or lines setting
+    @FXML
+    private VBox vbox_setting;
     /// Items that will be drawn on Map
     private List<Drawable> drawings = new ArrayList<>();
     /// Timer in map
@@ -124,6 +127,7 @@ public class MainController {
         for(StreetButton button : this.streetButtons){
             button.getStreet().deselectStreet();
         }
+        vbox_setting.getChildren().clear();
     }
 
     @FXML
@@ -132,6 +136,7 @@ public class MainController {
         for(Button button : this.streetButtons){
             vbox_line_stop.getChildren().add(button);
         }
+        vbox_setting.getChildren().clear();
     }
 
     /**
@@ -188,7 +193,7 @@ public class MainController {
             lineButtons.add(lineButton);
         }
         for(Street street : this.map.getStreets()){
-            StreetButton streetButton = new StreetButton(street, this.streetButtons);
+            StreetButton streetButton = new StreetButton(street, this.streetButtons, vbox_setting);
             this.streetButtons.add(streetButton);
         }
     }

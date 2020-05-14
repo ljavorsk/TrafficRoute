@@ -9,7 +9,7 @@ public class LineButton extends Button {
     public LineButton(Line line){
         this.line = line;
         this.setText(String.valueOf(line.getId()));
-        this.setMinSize(50, 20);
+        this.setMinSize(50, 30);
     }
 
     public Line getLine() {
