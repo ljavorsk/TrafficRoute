@@ -7,6 +7,7 @@
  */
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -95,7 +96,7 @@ public class MainController {
      * Stops the simulation
      */
     @FXML
-    private void stopSimulation(){
+    public void stopSimulation(){
         if (is_running){
             clock.cancel();
             is_running = false;
@@ -138,7 +139,12 @@ public class MainController {
         clock.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                m.oneMove();
+                try {
+                    m.oneMove();
+                } catch (Exception e){
+                    Alert internal_err = new Alert(Alert.AlertType.ERROR, "Internal Error");
+                    internal_err.showAndWait();
+                }
             }
         }, 0, (long) (1000 / time_speed));
     }
