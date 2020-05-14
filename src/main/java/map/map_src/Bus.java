@@ -24,7 +24,7 @@ public class Bus implements Drawable{
     /// Unique ID of the Bus
     private final String id;
     /// Shapes in GUI
-    private final List<Shape> shape;
+    private final List<Shape> shapes;
     /// Current position of the bus
     private AbstractMap.SimpleImmutableEntry<Coordinate, Street> current_position;
     /// Nearest navigation point which line can cross.
@@ -42,9 +42,9 @@ public class Bus implements Drawable{
     public Bus(String id, AbstractMap.SimpleImmutableEntry<Coordinate, Street> starting_position) {
         this.id = id;
         this.current_position = starting_position;
-        shape = new ArrayList<>();
-        shape.add(new Circle(starting_position.getKey().getX(), starting_position.getKey().getY(), 9, Color.GREEN));
-        shape.get(0).setOpacity(0.7);
+        shapes = new ArrayList<>();
+        shapes.add(new Circle(starting_position.getKey().getX(), starting_position.getKey().getY(), 9, Color.GREEN));
+        shapes.get(0).setOpacity(0.7);
     }
 
     /**
@@ -100,7 +100,13 @@ public class Bus implements Drawable{
      * @param position Position to be set
      */
     public void setPosition(Coordinate position) {
+        Coordinate old_pos = this.current_position.getKey();
         this.current_position = new AbstractMap.SimpleImmutableEntry<Coordinate, Street>(position, this.current_position.getValue());
+
+        for(Shape shape : shapes ){
+            shape.setTranslateX(current_position.getKey().getX() - old_pos.getX() + shape.getTranslateX());
+            shape.setTranslateY(current_position.getKey().getY() - old_pos.getY() + shape.getTranslateY());
+        }
     }
 
     /**
@@ -108,7 +114,7 @@ public class Bus implements Drawable{
      * @param street Street to be set
      */
     public void setStreet(Street street){
-        this.current_position.setValue(street);
+        this.current_position = new AbstractMap.SimpleImmutableEntry<>(this.current_position.getKey(), street);
     }
 
     /**
@@ -128,9 +134,10 @@ public class Bus implements Drawable{
         this.waiting_time = waiting_constant;
     }
 
+
     @Override
     public List<Shape> getShapes() {
-        return shape;
+        return shapes;
     }
 
     /**
@@ -144,4 +151,5 @@ public class Bus implements Drawable{
         }
         return false;
     }
+
 }

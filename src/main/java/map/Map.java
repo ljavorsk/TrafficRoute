@@ -142,7 +142,7 @@ public class Map extends Thread {
     /**
      * Simulate one move with lines on map.
      */
-    private void oneMove(){
+    public void oneMove(){
         for(Line line : this.lines){
             line.move();
         }

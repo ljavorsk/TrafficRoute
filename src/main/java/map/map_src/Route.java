@@ -38,6 +38,8 @@ public class Route{
 
         // Fill the route
         for (Street s : streets) {
+
+
             boolean backwards_coordinates = false;
 
             // We are going from end of the street to the beginning, so coordinates have to be reordered
@@ -60,7 +62,6 @@ public class Route{
     public static Route defaultRoute(List<Street> streets, List<Stop> stops_to_visit, Coordinate starting_point){
         // Route have to start in the first stop in stops_to_visit
         if (!(starting_point.equals(stops_to_visit.get(0).getCoordinate()))){
-            System.out.println("2");
             return null;
         }
 
@@ -89,17 +90,12 @@ public class Route{
         List<Coordinate> coordinates_in_street = s.getCoordinates();
         Coordinate last_coordinate = null;
 
+        List<SimpleImmutableEntry<Coordinate, Street>> tmp_route = new ArrayList<SimpleImmutableEntry<Coordinate, Street>>();
         for (Coordinate current_c : coordinates_in_street) {
             SimpleImmutableEntry<Coordinate, Street> tmp_position = new SimpleImmutableEntry<Coordinate, Street>(current_c, s);
 
             if (reorder_coordinates){
-                List<SimpleImmutableEntry<Coordinate, Street>> tmp_route = new ArrayList<SimpleImmutableEntry<Coordinate, Street>>();
                 tmp_route.add(tmp_position);
-
-                // Backwards iteration
-                for (int i = tmp_route.size(); i-- > 0;){
-                    this.route.add(tmp_route.get(i));
-                }
             }
             else {
                 // Just add position to the route
@@ -107,6 +103,14 @@ public class Route{
             }
             last_coordinate = current_c; 
         }
+
+        if (reorder_coordinates){
+            // Backwards iteration
+            for (int i = tmp_route.size(); i-- > 0;){
+                this.route.add(tmp_route.get(i));
+            }
+        }
+
         // Return where is the next street starting point
         return last_coordinate;
     }
@@ -128,7 +132,7 @@ public class Route{
     }
 
     /**
-     * Getter for the starting position position
+     * Getter for the starting position of the bus
      * @return Where the route starts
      */
     public SimpleImmutableEntry<Coordinate, Street> getFirst(){
@@ -203,7 +207,7 @@ public class Route{
      */
     public boolean shouldStop(Coordinate c){
         for (Stop stop : this.stops) {
-            if (c == stop.getCoordinate()){
+            if (c.equals(stop.getCoordinate())){
                 return true;
             }
         }

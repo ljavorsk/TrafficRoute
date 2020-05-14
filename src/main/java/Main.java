@@ -51,17 +51,19 @@ public class Main extends Application {
         AbstractMap.SimpleImmutableEntry<Coordinate, Street> start_p2 =
                 new AbstractMap.SimpleImmutableEntry<Coordinate, Street>(c2, s1);
 
-
-        Bus b1 = new Bus("SD102", start_p1);
-        Bus b2 = new Bus("SD102", start_p2);
-
+        List<Line> lines = map.getLines();
         List<Drawable> elements = new ArrayList<>();
+
+        for (Line line : lines){
+            elements.addAll(line.getBuses());
+        }
+
+
         elements.addAll(streets);
         elements.addAll(stops);
-        elements.add(b1);
-        elements.add(b2);
 
         MainController controller = loader.getController();
         controller.setDrawings(elements);
+        controller.startTime(map);
     }
 }
