@@ -54,9 +54,6 @@ public class MainController {
 
     private List<LineButton> lineButtons = new ArrayList<>();
     private List<StreetButton> streetButtons = new ArrayList<>();
-    private final ToggleGroup line_group = new ToggleGroup();
-    private final ToggleGroup street_group = new ToggleGroup();
-
 
     /**
      * Handler for the scroll zooming
@@ -124,6 +121,9 @@ public class MainController {
         for(Button button : this.lineButtons){
             vbox_line_stop.getChildren().add(button);
         }
+        for(StreetButton button : this.streetButtons){
+            button.getStreet().deselectStreet();
+        }
     }
 
     @FXML
@@ -188,7 +188,7 @@ public class MainController {
             lineButtons.add(lineButton);
         }
         for(Street street : this.map.getStreets()){
-            StreetButton streetButton = new StreetButton(street);
+            StreetButton streetButton = new StreetButton(street, this.streetButtons);
             this.streetButtons.add(streetButton);
         }
     }
