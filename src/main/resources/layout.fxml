@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="597.0" prefWidth="784.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
@@ -19,6 +22,17 @@
       </ScrollPane>
    </center>
    <right>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="time_speed_text" alignment="CENTER" disable="true" layoutX="16.0" layoutY="14.0" />
+            <HBox alignment="TOP_CENTER" layoutX="1.0" layoutY="40.0" prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="start_time" mnemonicParsing="false" onAction="#startSimulation" prefHeight="26.0" prefWidth="50.0" text="Play" />
+                  <Button fx:id="stop_time" mnemonicParsing="false" onAction="#stopSimulation" prefHeight="26.0" prefWidth="50.0" text="Stop" />
+                  <Button fx:id="slow_time" mnemonicParsing="false" onAction="#slowTime" prefHeight="26.0" prefWidth="40.0" text="&lt;&lt;" />
+                  <Button fx:id="speed_time" mnemonicParsing="false" onAction="#speedTime" prefHeight="26.0" prefWidth="40.0" text="&gt;&gt;" />
+               </children>
+            </HBox>
+         </children></AnchorPane>
    </right>
 </BorderPane>
