@@ -37,6 +37,8 @@ public class MainController {
     private int speed_times = 0;
     /// Map that is controlled in controller
     private Map map;
+    /// Indicates if the simulation is running
+    private boolean is_running = false;
 
 
 
@@ -54,27 +56,64 @@ public class MainController {
         main_content.setScaleY(zoom_value * main_content.getScaleY());
     }
 
+    /**
+     * Speeds the time in simulation
+     */
     @FXML
     private void speedTime(){
-        if (this.speed_times > 5)
+        if (this.speed_times >= 5)
             return;
+        this.speed_times++;
         clock.cancel();
-        startTime(this.map, 2*speed_times);
+        playSimulation();
     }
 
+    /**
+     * Slows the time in simulation
+     */
     @FXML
     private void slowTime(){
-
+        if (this.speed_times <= 0)
+            return;
+        this.speed_times--;
+        clock.cancel();
+        playSimulation();
     }
 
+    /**
+     * Starts the simulation
+     */
     @FXML
     private void startSimulation(){
-
+        if (!is_running){
+            clock.cancel();
+            playSimulation();
+        }
     }
 
+    /**
+     * Stops the simulation
+     */
     @FXML
     private void stopSimulation(){
+        if (is_running){
+            clock.cancel();
+            is_running = false;
+        }
+    }
 
+    /**
+     * Resolves how to start the simulation with right time frame
+     */
+    private void playSimulation(){
+        if (speed_times == 0){
+            startTime(this.map, 1);
+        }
+        else if (speed_times == 1) {
+            startTime(this.map, speed_times + 1);
+        } else{
+            startTime(this.map, 2*speed_times);
+        }
     }
 
     /**
@@ -92,7 +131,7 @@ public class MainController {
      * Starts the simulation
      */
     public void startTime(Map m, double time_speed){
-        this.speed_times++;
+        this.is_running = true;
         this.map = m;
         this.time_speed_text.setText("Time speed: " + time_speed);
         clock = new Timer(false);
