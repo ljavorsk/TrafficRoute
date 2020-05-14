@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="597.0" prefWidth="784.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
    <center>
@@ -22,17 +23,41 @@
       </ScrollPane>
    </center>
    <right>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <TextField fx:id="time_speed_text" alignment="CENTER" disable="true" layoutX="16.0" layoutY="14.0" />
-            <HBox alignment="TOP_CENTER" layoutX="1.0" layoutY="40.0" prefHeight="30.0" prefWidth="200.0">
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <top>
+            <AnchorPane prefHeight="74.0" prefWidth="201.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="start_time" mnemonicParsing="false" onAction="#startSimulation" prefHeight="26.0" prefWidth="50.0" text="Play" />
-                  <Button fx:id="stop_time" mnemonicParsing="false" onAction="#stopSimulation" prefHeight="26.0" prefWidth="50.0" text="Stop" />
-                  <Button fx:id="slow_time" mnemonicParsing="false" onAction="#slowTime" prefHeight="26.0" prefWidth="40.0" text="&lt;&lt;" />
-                  <Button fx:id="speed_time" mnemonicParsing="false" onAction="#speedTime" prefHeight="26.0" prefWidth="40.0" text="&gt;&gt;" />
+                  <TextField fx:id="time_speed_text" alignment="CENTER" disable="true" layoutX="16.0" layoutY="14.0" />
+                  <HBox alignment="TOP_CENTER" layoutX="1.0" layoutY="40.0" prefHeight="30.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="start_time" mnemonicParsing="false" onAction="#startSimulation" prefHeight="26.0" prefWidth="50.0" text="Play" />
+                        <Button fx:id="stop_time" mnemonicParsing="false" onAction="#stopSimulation" prefHeight="26.0" prefWidth="50.0" text="Stop" />
+                        <Button fx:id="slow_time" mnemonicParsing="false" onAction="#slowTime" prefHeight="26.0" prefWidth="40.0" text="&lt;&lt;" />
+                        <Button fx:id="speed_time" mnemonicParsing="false" onAction="#speedTime" prefHeight="26.0" prefWidth="40.0" text="&gt;&gt;" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </top>
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" onMouseClicked="#showLines" text="Lines" />
+                  <Button mnemonicParsing="false" onMouseClicked="#showStreets" text="Streets" />
                </children>
             </HBox>
-         </children></AnchorPane>
+         </bottom>
+         <center>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <center>
+                  <ScrollPane prefHeight="445.0" prefWidth="201.0" BorderPane.alignment="CENTER">
+                     <content>
+                        <VBox fx:id="vbox_line_stop" prefHeight="200.0" prefWidth="100.0" />
+                     </content>
+                  </ScrollPane>
+               </center>
+            </BorderPane>
+         </center>
+      </BorderPane>
    </right>
 </BorderPane>
