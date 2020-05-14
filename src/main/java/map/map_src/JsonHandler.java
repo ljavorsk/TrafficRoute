@@ -66,7 +66,9 @@ public class JsonHandler {
                         return false;
                     }
                     this.map.getStops().add(stop);
-                    new_street.addStop(stop);
+                    boolean result = new_street.addStop(stop);
+                    if (!result)
+                        return false;
                 }
                 this.map.getStreets().add(new_street);
             }

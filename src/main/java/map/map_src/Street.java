@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
 
 import java.util.List;
 import java.util.ArrayList;
-
+import java.util.Objects;
 
 
 /**
@@ -97,31 +97,16 @@ public class Street implements Drawable{
     /**
      * Adds the Stop in the Street's list of Stops
      * @param stop Stop that's going to be added
-     * @return If the process was successful
+     * @return If the operation was successful
      */
     public boolean addStop(Stop stop) {
         Coordinate stop_c = stop.getCoordinate();
-        for (int i = 0; i < this.list_of_coordinates.size() - 1; i++){
-            Coordinate c_A = this.list_of_coordinates.get(i);
-            Coordinate c_B = this.list_of_coordinates.get(i+1);
 
-            if (c_A.getX() == c_B.getX()){      // Look like __
-                if (c_A.getX() != stop_c.getX()){ continue; }
-                if((stop_c.getY() >= c_A.getY() && stop_c.getY() <= c_B.getY()) ||
-                    (stop_c.getY() <= c_A.getY() && stop_c.getY() >= c_B.getY())){   // Inside of street
-                        this.list_of_stops.add(stop);
-                        stop.setStreet(this);
-                        return true;
-                }
-            }
-            else if(c_A.getY() == c_B.getY()) { // Look like |
-                if (c_A.getY() != stop_c.getY()){ continue; }
-                if((stop_c.getX() >= c_A.getX() && stop_c.getX() <= c_B.getX()) || 
-                    (stop_c.getX() <= c_A.getX() && stop_c.getX() >= c_B.getX())){   // Inside of street
-                        this.list_of_stops.add(stop);
-                        stop.setStreet(this);
-                        return true;
-                }
+        for (Coordinate streets_c: list_of_coordinates) {
+            if (stop_c.equals(streets_c)){
+                this.list_of_stops.add(stop);
+                stop.setStreet(this);
+                return true;
             }
         }
         return false;
@@ -239,6 +224,24 @@ public class Street implements Drawable{
             line.setStrokeWidth(1);
             line.setStroke(Color.BLACK);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Street street = (Street) o;
+        return traffic_overload == street.traffic_overload &&
+                closed == street.closed &&
+                Objects.equals(id_str, street.id_str) &&
+                Objects.equals(list_of_coordinates, street.list_of_coordinates) &&
+                Objects.equals(list_of_stops, street.list_of_stops) &&
+                Objects.equals(street_shape, street.street_shape);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id_str, list_of_coordinates, list_of_stops, traffic_overload, closed, street_shape);
     }
 }
 
