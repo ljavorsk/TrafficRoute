@@ -4,6 +4,7 @@
     <property name="builddir" location="build" />
     <property name="destdir" location="dest" />
     <property name="libdir" location="lib" />
+    <property name="docdir" location="doc" />
     <property name="version" value="1.8" />
     <property name="project" value="ija-app" />
 
@@ -11,22 +12,33 @@
         <fileset dir="${libdir}" includes="*.jar"/>
     </path>
 
-    <target name="run" depends="compile">
-        <java fork="true" classname="Main">
+    <target name="run" depends="compile" description="Run the project">
+        <java fork="true" classname="ija.Main">
             <classpath>
                 <path refid="classpath" />
                 <path location="${destdir}/${project}.jar" />
             </classpath>
         </java>
     </target>
-    <target name="compile">
+    <target name="compile" description="Compile the project">
         <javac target="${version}" source="${version}" classpathref="classpath" includeantruntime="false" srcdir="${srcdir}"  destdir="${builddir}"/>
         <jar destfile="${destdir}/${project}.jar" basedir="${builddir}" >
             <fileset dir="${srcdir}/main/resources"/>
             <manifest>
-                <attribute name="Main-Class" value="Main"/>
+                <attribute name="Main-Class" value="ija.Main"/>
             </manifest>
         </jar>
+    </target>
+    <target name="doc" description="Generate documentation">
+        <javadoc sourcepath="${srcdir}/main/java" destdir="${docdir}">
+            <classpath>
+                <path refid="classpath" />
+                <path location="${destdir}/${project}.jar" />
+            </classpath>
+            <doctitle>
+                <![CDATA[<h1>Traffic Route</h1>]]>
+            </doctitle>
+        </javadoc>
     </target>
 </project>
 

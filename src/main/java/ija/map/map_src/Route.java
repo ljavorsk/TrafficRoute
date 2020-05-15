@@ -6,14 +6,13 @@
  * 
  */
 
-package map.map_src;
+package ija.map.map_src;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.AbstractMap.SimpleImmutableEntry;
 

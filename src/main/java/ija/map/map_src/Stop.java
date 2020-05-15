@@ -6,7 +6,7 @@
  * 
  */
 
-package map.map_src;
+package ija.map.map_src;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;

@@ -1,4 +1,4 @@
-package gui;
+package ija.gui;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
-import map.map_src.Street;
+import ija.map.map_src.Street;
 
 import java.util.List;
 

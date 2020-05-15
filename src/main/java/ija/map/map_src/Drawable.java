@@ -1,4 +1,13 @@
-package map.map_src;
+/*
+ * Source code for the final IJA project
+ * Drawable interface
+ * (C) Lukas Javorsky (xjavor20)
+ * (C) Patrik Ondriga (xondri08)
+ *
+ */
+
+
+package ija.map.map_src;
 
 import javafx.scene.shape.Shape;
 

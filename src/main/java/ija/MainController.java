@@ -6,22 +6,20 @@
  *
  */
 
-import gui.LineButton;
-import gui.StreetButton;
+package ija;
+import ija.gui.LineButton;
+import ija.gui.StreetButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import map.Map;
+import ija.map.Map;
 
-import map.map_src.Drawable;
-import map.map_src.Line;
-import map.map_src.Street;
+import ija.map.map_src.Drawable;
+import ija.map.map_src.Line;
+import ija.map.map_src.Street;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,6 +168,9 @@ public class MainController {
 
     /**
      * Starts the simulation
+     * @param m Map that will be simulated
+     * @param time_speed Speed value which controls time
+     * higher is faster
      */
     public void startTime(Map m, double time_speed){
         this.is_running = true;
