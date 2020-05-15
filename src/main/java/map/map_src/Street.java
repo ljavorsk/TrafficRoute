@@ -197,7 +197,7 @@ public class Street implements Drawable{
     public void highlightTheStreet(){
         for (int i = 2; i < street_shape.size(); i+=2) {
             Shape line = street_shape.get(i);
-            line.setOpacity(0.4);
+            line.setOpacity(0.6);
             switch (traffic_overload){
                 case 1:
                     line.setStroke(Color.GREEN);
@@ -214,6 +214,9 @@ public class Street implements Drawable{
                 default:
                     line.setStroke(Color.BLACK);
                     break;
+            }
+            if(isClosed()){
+                line.setStroke(Color.BLACK);
             }
         }
     }
@@ -245,7 +248,7 @@ public class Street implements Drawable{
      * Changes it's width back to 1
      */
     public void deselectStreet(){
-        for (int i = 1; i < street_shape.size(); i++) {
+        for (int i = 1; i < street_shape.size(); i+=2) {
             Shape line = street_shape.get(i);
             line.setStrokeWidth(1);
         }

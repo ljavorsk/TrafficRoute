@@ -57,7 +57,7 @@
                   </ScrollPane>
                </center>
                <bottom>
-                  <VBox fx:id="vbox_setting" prefHeight="98.0" prefWidth="201.0" BorderPane.alignment="BOTTOM_CENTER" />
+                  <VBox fx:id="vbox_setting" prefHeight="98.0" prefWidth="201.0" BorderPane.alignment="CENTER" />
                </bottom>
             </BorderPane>
          </center>

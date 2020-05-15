@@ -10,6 +10,9 @@ package map.map_src;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.fxml.FXML;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class Line{
     /// Unique identification.
@@ -18,6 +21,8 @@ public class Line{
     private Route route;
     /// List of buses.
     private final List<Bus> buses = new ArrayList<>();
+    @FXML
+    private Pane main_content;
 
     /**
      * Constructor
@@ -102,6 +107,7 @@ public class Line{
         for(Bus bus : this.buses){
             if(!bus.waitOnStop()){
                 if(this.moveWithBus(bus)){
+                    //main_content.getChildren().removeAll(bus.getShapes()); //todo problem
                     this.buses.remove(bus);
                 }
             }
@@ -129,6 +135,7 @@ public class Line{
             //Check if bus isn`t on some stop.
             if(route.shouldStop(bus.getPosition())) {
                 if(bus.getDeleteFlag()){
+                    bus.getShapes().get(0).setFill(Color.DARKRED);
                     return true;
                 }
                 bus.setWaitingTime();
@@ -239,11 +246,34 @@ public class Line{
     }
 
     /**
+     * Selects the route and all line`s buses
+     * Increases it's opacity
+     * Also selects every stop on the route
+     */
+    public void selectLine(){
+        this.route.selectRoute();
+        for(Bus bus : this.buses){
+            bus.selectBus();
+        }
+    }
+
+    /**
+     * Deselect the route and all line`s buses
+     * Decreases it's opacity to 0 so it's invisible
+     * Also deselects every stop on the route
+     */
+    public void deselectLine(){
+        this.route.deselectRoute();
+        for(Bus bus : this.buses){
+            bus.deselectBus();
+        }
+    }
+
+    /**
      * Getter for the route
      * @return Route of the line
      */
     public Route getRoute() {
         return this.route;
     }
-
 }
