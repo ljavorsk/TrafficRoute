@@ -252,6 +252,8 @@ public class Route implements Drawable{
             // Find first occurrence of the closed street (connecting Coordinate)
             if (position_to_be_deleted.getValue() == closed_street){
                 index_where_add = this.route.indexOf(position_to_be_deleted);
+                if (index_where_add == -1)
+                    return null;
                 first_connection_coordinate = position_to_be_deleted.getKey();
                 break;
             }
