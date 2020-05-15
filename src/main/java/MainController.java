@@ -8,6 +8,7 @@
 
 import gui.LineButton;
 import gui.StreetButton;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -176,13 +177,8 @@ public class MainController {
         clock.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                try {
-                    m.oneMove();
-                } catch (Exception e){
-                    Alert internal_err = new Alert(Alert.AlertType.ERROR, "Internal Error");
-                    internal_err.showAndWait();
+                Platform.runLater(m::oneMove);
                 }
-            }
         }, 0, (long) (1000 / time_speed));
     }
 
