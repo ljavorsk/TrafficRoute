@@ -48,17 +48,8 @@ public class Main extends Application {
         primaryStage.setTitle("Mapa mesta: " + map.getTownName());
         List<Street> streets = map.getStreets();
         List<Stop> stops = map.getStops();
-
-        Coordinate c1,c2;
-        Street s1 = streets.get(0);
-        c1 = s1.beginOfTheStreet();
-        c2 = s1.endOfTheStreet();
-        AbstractMap.SimpleImmutableEntry<Coordinate, Street> start_p1 =
-                new AbstractMap.SimpleImmutableEntry<Coordinate, Street>(c1, s1);
-        AbstractMap.SimpleImmutableEntry<Coordinate, Street> start_p2 =
-                new AbstractMap.SimpleImmutableEntry<Coordinate, Street>(c2, s1);
-
         List<Line> lines = map.getLines();
+
         List<Drawable> elements = new ArrayList<>();
 
         for (Line line : lines){
