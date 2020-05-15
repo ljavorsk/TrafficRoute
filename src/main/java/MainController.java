@@ -13,8 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -45,8 +43,6 @@ public class MainController {
     /// Vbox field for streets or lines setting
     @FXML
     private VBox vbox_setting;
-    /// Items that will be drawn on Map
-    private List<Drawable> drawings = new ArrayList<>();
     /// Timer in map
     private Timer clock;
     /// Number which represents how many times did we speed the time
@@ -56,8 +52,8 @@ public class MainController {
     /// Indicates if the simulation is running
     private boolean is_running = false;
 
-    private List<LineButton> lineButtons = new ArrayList<>();
-    private List<StreetButton> streetButtons = new ArrayList<>();
+    private final List<LineButton> lineButtons = new ArrayList<>();
+    private final List<StreetButton> streetButtons = new ArrayList<>();
 
     /**
      * Handler for the scroll zooming
@@ -126,6 +122,7 @@ public class MainController {
             vbox_line_stop.getChildren().add(button);
         }
         for(StreetButton button : this.streetButtons){
+            button.getStreet().unhighlightTheStreet();
             button.getStreet().deselectStreet();
         }
         vbox_setting.getChildren().clear();
@@ -134,8 +131,12 @@ public class MainController {
     @FXML
     private void showStreets(){
         vbox_line_stop.getChildren().clear();
-        for(Button button : this.streetButtons){
+        for(StreetButton button : this.streetButtons){
             vbox_line_stop.getChildren().add(button);
+            button.getStreet().highlightTheStreet();
+        }
+        for(LineButton button : this.lineButtons){
+            button.getLine().deselectLine();
         }
         vbox_setting.getChildren().clear();
     }
@@ -159,11 +160,9 @@ public class MainController {
      * @param drawings List of elements that will be drawn
      */
     public void setDrawings(List<Drawable> drawings) {
-        this.drawings = drawings;
         for (Drawable element : drawings) {
             main_content.getChildren().addAll(element.getShapes());
         }
-
     }
 
     /**
@@ -173,6 +172,7 @@ public class MainController {
         this.is_running = true;
         this.map = m;
         this.time_speed_text.setText("Time speed: " + time_speed);
+        this.setRightScreen();
         clock = new Timer(false);
         clock.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -183,13 +183,13 @@ public class MainController {
     }
 
 
-    public void setRightScreen(){
+    private void setRightScreen(){
         for(Line line : this.map.getLines()){
-            LineButton lineButton = new LineButton(line);
+            LineButton lineButton = new LineButton(line, this.lineButtons, this.vbox_setting, this.main_content);
             lineButtons.add(lineButton);
         }
         for(Street street : this.map.getStreets()){
-            StreetButton streetButton = new StreetButton(street, this.streetButtons, vbox_setting);
+            StreetButton streetButton = new StreetButton(street, this.streetButtons, this.vbox_setting);
             this.streetButtons.add(streetButton);
         }
     }
