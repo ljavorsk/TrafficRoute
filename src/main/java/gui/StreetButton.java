@@ -22,7 +22,7 @@ public class StreetButton extends Button {
     public StreetButton(Street street, List<StreetButton> buttons, VBox vbox_setting){
         this.vbox_setting = vbox_setting;
         this.street = street;
-        allStreetButtons = buttons;
+        this.allStreetButtons = buttons;
         this.setText(street.getId());
         this.setMinSize(150, 30);
         this.setOnAction(new EventHandler<ActionEvent>() {
@@ -41,22 +41,23 @@ public class StreetButton extends Button {
     private void setVboxSetting(){
         vbox_setting.getChildren().clear();
         vbox_setting.getChildren().add(close_open_button);
-        vbox_setting.getChildren().add(new Label("traffic overload"));
+        vbox_setting.getChildren().add(new Label("TRAFFIC OVERLOAD"));
         vbox_setting.getChildren().add(slider);
     }
 
     private void setSetting(){
-        close_open_button.setText("close street");
+        close_open_button.setText("CLOSE STREET");
         close_open_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if(street.isClosed()){
-                    close_open_button.setText("close street");
+                    close_open_button.setText("CLOSE STREET");
                     street.open_street();
                 }else{
-                    close_open_button.setText("open street");
+                    close_open_button.setText("OPEN STREET");
                     street.close_street();
                 }
+                street.highlightTheStreet();
             }
         });
         slider.setMin(1);
@@ -69,7 +70,7 @@ public class StreetButton extends Button {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 slider.setValue(Math.round(newValue.doubleValue()));
                 street.setTrafficOverload((short) slider.getValue());
-                street.selectStreet();
+                street.highlightTheStreet();
             }
         });
     }
