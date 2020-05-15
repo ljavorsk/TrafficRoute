@@ -16,7 +16,7 @@
          <content>
             <Group>
                <children>
-                  <Pane fx:id="main_content" onScroll="#zoom" prefHeight="700.0" prefWidth="899.0" style="-fx-background-color: #c9c9c9;;" />
+                  <Pane fx:id="main_content" onScroll="#zoom" prefHeight="1200.0" prefWidth="1999.0" style="-fx-background-color: #c9c9c9;;" />
                </children>
             </Group>
          </content>

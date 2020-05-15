@@ -94,6 +94,7 @@ public class Line{
             for(int i=0; i<(number_of_buses-1); i++){
                 if(!this.buses.get(i).getDeleteFlag()){
                     this.buses.get(i).setDeleteFlag();
+                    this.buses.get(i).getShapes().get(0).setFill(Color.DARKRED);
                     return;
                 }
             }
@@ -107,7 +108,7 @@ public class Line{
         for(Bus bus : this.buses){
             if(!bus.waitOnStop()){
                 if(this.moveWithBus(bus)){
-                    //main_content.getChildren().removeAll(bus.getShapes()); //todo problem
+                    bus.getShapes().get(0).setOpacity(0);
                     this.buses.remove(bus);
                 }
             }
@@ -135,7 +136,6 @@ public class Line{
             //Check if bus isn`t on some stop.
             if(route.shouldStop(bus.getPosition())) {
                 if(bus.getDeleteFlag()){
-                    bus.getShapes().get(0).setFill(Color.DARKRED);
                     return true;
                 }
                 bus.setWaitingTime();
