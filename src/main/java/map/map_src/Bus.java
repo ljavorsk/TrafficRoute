@@ -176,6 +176,11 @@ public class Bus implements Drawable{
      * Change his fill to BLUE color and increase opacity
      */
     public void selectBus(){
+        Color current_color = (Color) shapes.get(0).getFill();
+        // If the bus is removed, don't change his color back to green
+        if (current_color.equals(Color.DARKRED)){
+            return;
+        }
         shapes.get(0).setFill(Color.BLUE);
         shapes.get(0).setOpacity(0.95);
     }
