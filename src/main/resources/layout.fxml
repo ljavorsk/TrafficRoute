@@ -16,7 +16,7 @@
          <content>
             <Group>
                <children>
-                  <Pane fx:id="main_content" onScroll="#zoom" prefHeight="1200.0" prefWidth="1999.0" style="-fx-background-color: #c9c9c9;;" />
+                  <Pane fx:id="main_content" onScroll="#zoom" prefHeight="700.0" prefWidth="899.0" style="-fx-background-color: #c9c9c9;;" />
                </children>
             </Group>
          </content>
@@ -40,7 +40,7 @@
             </AnchorPane>
          </top>
          <bottom>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="71.0" prefWidth="201.0" BorderPane.alignment="CENTER">
                <children>
                   <Button mnemonicParsing="false" onMouseClicked="#showLines" text="Lines" />
                   <Button mnemonicParsing="false" onMouseClicked="#showStreets" text="Streets" />
@@ -52,12 +52,12 @@
                <center>
                   <ScrollPane prefHeight="445.0" prefWidth="201.0" BorderPane.alignment="CENTER">
                      <content>
-                        <VBox fx:id="vbox_line_stop" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox fx:id="vbox_line_stop" prefHeight="200.0" prefWidth="199.0" />
                      </content>
                   </ScrollPane>
                </center>
                <bottom>
-                  <VBox fx:id="vbox_setting" prefHeight="98.0" prefWidth="201.0" BorderPane.alignment="CENTER" />
+                  <VBox fx:id="vbox_setting" prefHeight="98.0" prefWidth="201.0" BorderPane.alignment="BOTTOM_CENTER" />
                </bottom>
             </BorderPane>
          </center>

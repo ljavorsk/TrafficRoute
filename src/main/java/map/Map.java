@@ -11,7 +11,6 @@ package map;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import map.map_src.Stop;
 import map.map_src.Line;
@@ -26,19 +25,15 @@ import map.map_src.JsonHandler;
 
 public class Map extends Thread {
     /// Handler for json files with streets, stops and lines.
-    private JsonHandler json_handler;
+    private final JsonHandler json_handler;
     /// Name of the town, that this map represents
-    private String town_name;
+    private final String town_name;
     /// All of the lines in town
-    private List<Line> lines = new ArrayList<Line>();
+    private final List<Line> lines = new ArrayList<Line>();
     /// All of the streets in town
-    private List<Street> streets = new ArrayList<Street>();
+    private final List<Street> streets = new ArrayList<Street>();
     /// All of the stops in town
-    private List<Stop> stops = new ArrayList<Stop>();
-    /// Time between next move with all lines in milliseconds.
-    private int sleep_time = 5;
-    /// Pause move operation.
-    private boolean pause;
+    private final List<Stop> stops = new ArrayList<Stop>();
 
 
     /**
@@ -84,59 +79,6 @@ public class Map extends Thread {
      */
     public String getTownName() {
         return this.town_name;
-    }
-
-
-    /**
-     * Setter for sleep time between next move with lines in milliseconds.
-     * @param sleep_time the sleep_time to set in milliseconds
-     */
-    public void setSleepTime(int sleep_time) {
-        this.sleep_time = sleep_time;
-    }
-
-
-    /**
-     * Set pause to true.
-     */
-    public void mapPause(){
-        this.pause = true;
-    }
-
-
-    /**
-     * Set pause to false.
-     */
-    public void mapResume(){
-        this.pause = false;
-    }
-
-
-    /**
-     * Stop running lines on map, this method can by used only one time.
-     * If it`s used, the map cannot run anymore.
-     */
-    public void mapStop(){
-        this.interrupt();
-    }
-
-
-    /**
-     * Simulate moves on map with lines.
-     */
-    @Override
-    public void run() {
-        while (true) {
-            try {
-                oneMove();
-                TimeUnit.MILLISECONDS.sleep(sleep_time);
-                while(pause){
-                    TimeUnit.MILLISECONDS.sleep(200);
-                }
-            } catch (InterruptedException e) {
-                break;
-            }
-        }
     }
 
     /**
