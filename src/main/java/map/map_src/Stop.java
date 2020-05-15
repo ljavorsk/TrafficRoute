@@ -102,9 +102,9 @@ public class Stop implements Drawable{
      * Selects the stop
      * Change it's color to PURPLE
      */
-    public void selectStop(Color color){
+    public void selectStop(){
         for (Shape shape : stop_shape) {
-                shape.setFill(color);
+                shape.setFill(Color.PURPLE);
         }
     }
 
