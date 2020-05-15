@@ -8,6 +8,10 @@
 
 package map.map_src;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +21,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
  * Represents the Route that will Line follow
  * The route contains ordered streets and stops that defines the route
  */
-public class Route{
+public class Route implements Drawable{
     /// Route that the Line will take
     private final List<SimpleImmutableEntry<Coordinate, Street>> route = new ArrayList<>();
     /// List of the stops within the route
@@ -26,6 +30,8 @@ public class Route{
     private final List<Street> streets;
     /// Starting point of the route
     private final Coordinate starting_point;
+    /// Route GUI shape
+    private final List<Shape> route_shape = new ArrayList<>();
 
     /**
      * Constructor for the Route
@@ -289,4 +295,62 @@ public class Route{
         // Create new Route with edited streets
         return new Route(this.streets, this.stops, this.starting_point);
     }
+
+    @Override
+    public List<Shape> getShapes() {
+        boolean starting_stop_found = false;
+        for (int i = 0; i < route.size(); i++) {
+            Coordinate first = route.get(i).getKey();
+
+            // Route starts at the starting bus stop so we need to skip the coordinates until the stop's coordinate
+            if (!first.equals(getStartingPoint()) && !starting_stop_found)
+                continue;
+            else {
+                starting_stop_found = true;
+            }
+
+            // Ending point of the route we can stop adding route's shape
+            if(first.equals(getEndingPoint()))
+                break;
+            Coordinate second = null;
+            if (route.size() > i + 1) {
+                second = route.get(i + 1).getKey();
+                Line line = new Line(first.getX(), first.getY(), second.getX(), second.getY());
+                line.setStroke(Color.PURPLE);
+                line.setOpacity(0);
+                line.setStrokeWidth(5);
+                route_shape.add(line);
+            }
+        }
+        return route_shape;
+    }
+
+    /**
+     * Selects the route
+     * Increases it's opacity
+     * Also selects every stop on the route
+     */
+    public void selectRoute(){
+        for (Shape line : route_shape) {
+            line.setOpacity(0.5);
+        }
+        for (Stop stop : stops) {
+            stop.selectStop(Color.PURPLE);
+        }
+    }
+
+    /**
+     * Deselect the route
+     * Decreases it's opacity to 0 so it's invisible
+     * Also deselects every stop on the route
+     */
+    public void deselectRoute(){
+        for (Shape line : route_shape) {
+            line.setOpacity(0);
+        }
+        for (Stop stop : stops) {
+            stop.deselectStop();
+        }
+    }
+
 }

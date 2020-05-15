@@ -63,6 +63,7 @@ public class Main extends Application {
 
         for (Line line : lines){
             elements.addAll(line.getBuses());
+            elements.add(line.getRoute());
         }
 
 

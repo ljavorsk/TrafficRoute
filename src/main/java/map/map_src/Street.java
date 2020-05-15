@@ -181,20 +181,23 @@ public class Street implements Drawable{
             if (list_of_coordinates.size() > i + 1) {
                 second = list_of_coordinates.get(i + 1);
                 Line line = new Line(first.getX(), first.getY(), second.getX(), second.getY());
+                Line highlight_line = new Line(first.getX(), first.getY(), second.getX(), second.getY());
+                highlight_line.setStrokeWidth(4);
+                highlight_line.setOpacity(0);
                 street_shape.add(line);
+                street_shape.add(highlight_line);
             }
         }
         return street_shape;
     }
 
     /**
-     * Makes the street's shape wider
-     * Also changes the color of the street by it's traffic overload
+     * Highlight the street by it's traffic overload
      */
-    public void selectStreet(){
-        for (int i = 1; i < street_shape.size(); i++) {
+    public void highlightTheStreet(){
+        for (int i = 2; i < street_shape.size(); i+=2) {
             Shape line = street_shape.get(i);
-            line.setStrokeWidth(3);
+            line.setOpacity(0.4);
             switch (traffic_overload){
                 case 1:
                     line.setStroke(Color.GREEN);
@@ -216,13 +219,35 @@ public class Street implements Drawable{
     }
 
     /**
-     * Resets the width of the street to normal
+     * Unhighlight the street
+     * Changes it's color back to BLACK
+     */
+    public void unhighlightTheStreet(){
+        for (int i = 2; i < street_shape.size(); i+=2) {
+            Shape line = street_shape.get(i);
+            line.setOpacity(0);
+        }
+    }
+
+    /**
+     * Selects the street
+     * Changes it's width to 3 (makes it wider)
+     */
+    public void selectStreet(){
+        for (int i = 1; i < street_shape.size(); i+=2) {
+            Shape line = street_shape.get(i);
+            line.setStrokeWidth(3);
+        }
+    }
+
+    /**
+     * Deselects the street
+     * Changes it's width back to 1
      */
     public void deselectStreet(){
         for (int i = 1; i < street_shape.size(); i++) {
             Shape line = street_shape.get(i);
             line.setStrokeWidth(1);
-            line.setStroke(Color.BLACK);
         }
     }
 
