@@ -64,15 +64,35 @@ public class Line{
             return false;
         }
         this.buses.add(new Bus(String.valueOf(this.buses.size()+1), this.route.getFirst()));
-        this.buses.get(0).setNavigationPoint(this.route.getFirst());
         return true;
     }
 
     /**
-     * Create new bus on this line, that will start at begin of route.
+     * Create new bus on this line, that will start at begin of route. Line can have only 4 buses.
+     * @return new created bus f buses are less then 4, null otherwise
      */
-    public void createBus(){
-        this.buses.add(new Bus(String.valueOf(this.buses.size()+1), this.route.getFirst()));
+    public Bus createBus(){
+        if(!(this.buses.size()<4)){
+            return null;
+        }
+        Bus bus = new Bus(String.valueOf(this.buses.size()+1), this.route.getFirst());
+        this.buses.add(bus);
+        return bus;
+    }
+
+    /**
+     * Delete one bus on this line, but on line must be at least one bus.
+     */
+    public void deleteBus(){
+        int number_of_buses = this.buses.size();
+        if(number_of_buses > 1){
+            for(int i=0; i<(number_of_buses-1); i++){
+                if(!this.buses.get(i).getDeleteFlag()){
+                    this.buses.get(i).setDeleteFlag();
+                    return;
+                }
+            }
+        }
     }
 
     /**
@@ -81,16 +101,19 @@ public class Line{
     public void move(){
         for(Bus bus : this.buses){
             if(!bus.waitOnStop()){
-                this.moveWithBus(bus);
+                if(this.moveWithBus(bus)){
+                    this.buses.remove(bus);
+                }
             }
         }
     }
 
     /**
-     * Move with bus.
+     * Move with bus. And return if bus must be deleted.
      * @param bus Which bus is moving.
+     * @return true if after move must be bus deleted, false otherwise
      */
-    private void moveWithBus(Bus bus){
+    private boolean moveWithBus(Bus bus){
         this.setDirection(bus);
         // Check if bus reach navigation point.
         while(bus.getPosition().equals(bus.getNavigationPoint().getKey())){
@@ -105,12 +128,15 @@ public class Line{
             }
             //Check if bus isn`t on some stop.
             if(route.shouldStop(bus.getPosition())) {
+                if(bus.getDeleteFlag()){
+                    return true;
+                }
                 bus.setWaitingTime();
-                return;
+                return false;
             }
         }
         if(bus.getStreet().isClosed()){
-            return;
+            return false;
         }
         float move_by = this.setSpeed(bus.getStreet().getTrafficOverload());
         float new_x = bus.getPosition().getX();
@@ -162,6 +188,7 @@ public class Line{
             }
         }
         bus.setPosition(Coordinate.create(new_x, new_y));
+        return false;
     }
 
     /**
