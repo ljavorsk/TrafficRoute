@@ -33,6 +33,8 @@ public class Bus implements Drawable{
     private boolean start_2_end = true;
     /// How many time must line wait until can move.
     private int waiting_time = 0;
+    /// Flag for delete bus when arrived to the nearest stop.
+    private boolean delete_flag = false;
 
     /**
      * Constructor
@@ -46,6 +48,7 @@ public class Bus implements Drawable{
         Circle circle = new Circle(starting_position.getKey().getX(), starting_position.getKey().getY(), 9, Color.GREEN);
         circle.setOpacity(0.8);
         shapes.add(circle);
+        this.setNavigationPoint(starting_position);
     }
 
     /**
@@ -86,6 +89,21 @@ public class Bus implements Drawable{
      */
     public boolean isStart2end(){
         return this.start_2_end;
+    }
+
+    /**
+     * Getter for flag if bus will be destroyed.
+     * @return true if flag is set, false otherwise
+     */
+    public boolean getDeleteFlag(){
+        return this.delete_flag;
+    }
+
+    /**
+     * Set delete flag to true;
+     */
+    public void setDeleteFlag(){
+        this.delete_flag = true;
     }
 
     /**

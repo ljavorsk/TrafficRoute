@@ -72,7 +72,6 @@ public class Main extends Application {
         this.controller = loader.getController();
         controller.setDrawings(elements);
         controller.startTime(map, 1);
-        controller.setRightScreen();
     }
 
     @Override
