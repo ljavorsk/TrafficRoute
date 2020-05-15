@@ -52,18 +52,18 @@ public class Main extends Application {
 
         List<Drawable> elements = new ArrayList<>();
 
+        elements.addAll(streets);
+        elements.addAll(stops);
+
         for (Line line : lines){
             elements.addAll(line.getBuses());
             elements.add(line.getRoute());
         }
 
-
-        elements.addAll(streets);
-        elements.addAll(stops);
-
         this.controller = loader.getController();
         controller.setDrawings(elements);
         controller.startTime(map, 1);
+        controller.setRightScreen();
     }
 
     @Override

@@ -8,10 +8,9 @@
 
 package map.map_src;
 
-import java.util.ArrayList;
 import java.util.List;
-import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import javafx.scene.paint.Color;
 
 public class Line{
@@ -20,9 +19,7 @@ public class Line{
     /// Route handler.
     private Route route;
     /// List of buses.
-    private final List<Bus> buses = new ArrayList<>();
-    @FXML
-    private Pane main_content;
+    private final List<Bus> buses = new CopyOnWriteArrayList<Bus>();
 
     /**
      * Constructor
@@ -77,7 +74,13 @@ public class Line{
      * @return new created bus f buses are less then 4, null otherwise
      */
     public Bus createBus(){
-        if(!(this.buses.size()<4)){
+        int counter = 0;
+        for(Bus bus : buses){
+            if(!bus.getDeleteFlag()){
+                counter++;
+            }
+        }
+        if(!(counter<4)){
             return null;
         }
         Bus bus = new Bus(String.valueOf(this.buses.size()+1), this.route.getFirst());
@@ -87,18 +90,20 @@ public class Line{
 
     /**
      * Delete one bus on this line, but on line must be at least one bus.
+     * @return True if delete was successful, false otherwise
      */
-    public void deleteBus(){
+    public boolean deleteBus(){
         int number_of_buses = this.buses.size();
         if(number_of_buses > 1){
             for(int i=0; i<(number_of_buses-1); i++){
                 if(!this.buses.get(i).getDeleteFlag()){
                     this.buses.get(i).setDeleteFlag();
                     this.buses.get(i).getShapes().get(0).setFill(Color.DARKRED);
-                    return;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     /**

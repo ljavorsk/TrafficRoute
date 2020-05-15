@@ -10,10 +10,11 @@ import gui.LineButton;
 import gui.StreetButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import map.Map;
@@ -118,8 +119,9 @@ public class MainController {
     @FXML
     private void showLines(){
         vbox_line_stop.getChildren().clear();
-        for(Button button : this.lineButtons){
+        for(LineButton button : this.lineButtons){
             vbox_line_stop.getChildren().add(button);
+            button.getLine().deselectLine();
         }
         for(StreetButton button : this.streetButtons){
             button.getStreet().unhighlightTheStreet();
@@ -134,6 +136,7 @@ public class MainController {
         for(StreetButton button : this.streetButtons){
             vbox_line_stop.getChildren().add(button);
             button.getStreet().highlightTheStreet();
+            button.getStreet().deselectStreet();
         }
         for(LineButton button : this.lineButtons){
             button.getLine().deselectLine();
@@ -172,7 +175,6 @@ public class MainController {
         this.is_running = true;
         this.map = m;
         this.time_speed_text.setText("Time speed: " + time_speed);
-        this.setRightScreen();
         clock = new Timer(false);
         clock.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -183,9 +185,9 @@ public class MainController {
     }
 
 
-    private void setRightScreen(){
+    public void setRightScreen(){
         for(Line line : this.map.getLines()){
-            LineButton lineButton = new LineButton(line, this.lineButtons, this.vbox_setting, this.main_content);
+            LineButton lineButton = new LineButton(line, this.lineButtons, this.vbox_setting, this.main_content, this.vbox_line_stop);
             lineButtons.add(lineButton);
         }
         for(Street street : this.map.getStreets()){
