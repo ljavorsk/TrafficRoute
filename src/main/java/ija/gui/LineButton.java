@@ -1,7 +1,5 @@
 package ija.gui;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -114,7 +112,7 @@ public class LineButton extends HBox {
 
     private void setDeturScreen(){
         line.deselectLine();
-        List<ComboBox> comboBoxList = new ArrayList<>();
+        List<DetourComboBox> comboBoxList = new ArrayList<>();
         for(Street street : line.getRoute().getStreets()){
             street.selectStreet();
         }
@@ -141,52 +139,39 @@ public class LineButton extends HBox {
         vbox_setting.getChildren().clear();
         vbox_setting.getChildren().add(confirm);
         vbox_setting.getChildren().add(cancel);
-        cancel.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                vbox_middle.getChildren().clear();
-                vbox_middle.getChildren().addAll(tmp);
-                setVboxSetting();
-                line.selectLine();
-                for(Street street : line.getRoute().getStreets()){
-                    street.deselectStreet();
-                    street.unhighlightTheStreet();
-                }
-            }
-        });
-        remove_combo.valueProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                String street_name = (String) remove_combo.valueProperty().getValue();
-                for(Street street : line.getRoute().getStreets()){
-                    street.unhighlightTheStreet();
-                    if(street.getId().equals(street_name)){
-                        street.highlightForDetour(Color.RED);
-                    }
-                }
-            }
-        });
+        confirm.setOnAction(e -> confirmButtonAction());
+        cancel.setOnAction(e -> cancelButtonAction(tmp));
+        add.setOnAction(e -> addNewStreet(comboBoxList, add));
+        remove_combo.setOnAction(e -> removeComboAction((String) remove_combo.valueProperty().getValue()));
     }
 
-    private void addNewStreet(List<ComboBox> comboBoxList, Button add){
-        ComboBox comboBox = new ComboBox();
-        comboBoxList.add(comboBox);
-        comboBox.setVisibleRowCount(5);
-        for(Street street : other_streets){
-            comboBox.getItems().add(street.getId());
+    private void confirmButtonAction(){
+
+    }
+
+    private void cancelButtonAction(List<Node> tmp){
+        vbox_middle.getChildren().clear();
+        vbox_middle.getChildren().addAll(tmp);
+        setVboxSetting();
+        line.selectLine();
+        for(Street street : allStreets){
+            street.deselectStreet();
+            street.unhighlightTheStreet();
         }
-        comboBox.valueProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                String street_name = (String) comboBox.valueProperty().getValue();
-                for(Street street : line.getRoute().getStreets()){
-                    street.unhighlightTheStreet();
-                    if(street.getId().equals(street_name)){
-                        street.highlightForDetour(Color.GREEN);
-                    }
-                }
+    }
+
+    private void removeComboAction(String street_name){
+        for(Street street : line.getRoute().getStreets()){
+            street.unhighlightTheStreet();
+            if(street.getId().equals(street_name)){
+                street.highlightForDetour(Color.RED);
             }
-        });
+        }
+    }
+
+    private void addNewStreet(List<DetourComboBox> comboBoxList, Button add){
+        DetourComboBox comboBox = new DetourComboBox(this.other_streets, comboBoxList);
+        comboBoxList.add(comboBox);
         vbox_middle.getChildren().remove(add);
         vbox_middle.getChildren().add(comboBox);
         vbox_middle.getChildren().add(add);
