@@ -337,7 +337,7 @@ public class Route implements Drawable{
             line.setOpacity(0.5);
         }
         for (Stop stop : stops) {
-            stop.selectStop(Color.PURPLE);
+            stop.selectStop();
         }
     }
 
