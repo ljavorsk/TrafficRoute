@@ -244,6 +244,18 @@ public class Street implements Drawable{
     }
 
     /**
+     * Select the street for detour purpose
+     * @param color for what color will be street highlight
+     */
+    public void highlightForDetour(Color color){
+        for (int i = 2; i < street_shape.size(); i+=2) {
+            Shape line = street_shape.get(i);
+            line.setOpacity(0.6);
+            line.setStroke(color);
+        }
+    }
+
+    /**
      * Deselects the street
      * Changes it's width back to 1
      */

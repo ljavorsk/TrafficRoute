@@ -40,7 +40,7 @@
             </AnchorPane>
          </top>
          <bottom>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="201.0" BorderPane.alignment="CENTER">
                <children>
                   <Button mnemonicParsing="false" onMouseClicked="#showLines" text="Lines" />
                   <Button mnemonicParsing="false" onMouseClicked="#showStreets" text="Streets" />
@@ -50,14 +50,14 @@
          <center>
             <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <center>
-                  <ScrollPane prefHeight="445.0" prefWidth="201.0" BorderPane.alignment="CENTER">
+                  <ScrollPane prefHeight="375.0" prefWidth="201.0" BorderPane.alignment="CENTER">
                      <content>
-                        <VBox fx:id="vbox_line_stop" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox fx:id="vbox_line_stop" prefHeight="217.0" prefWidth="199.0" />
                      </content>
                   </ScrollPane>
                </center>
                <bottom>
-                  <VBox fx:id="vbox_setting" prefHeight="98.0" prefWidth="201.0" BorderPane.alignment="CENTER" />
+                  <VBox fx:id="vbox_setting" prefHeight="91.0" prefWidth="201.0" BorderPane.alignment="CENTER" />
                </bottom>
             </BorderPane>
          </center>
