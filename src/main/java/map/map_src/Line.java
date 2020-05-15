@@ -238,4 +238,12 @@ public class Line{
         }
     }
 
+    /**
+     * Getter for the route
+     * @return Route of the line
+     */
+    public Route getRoute() {
+        return this.route;
+    }
+
 }
