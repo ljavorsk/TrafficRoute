@@ -27,6 +27,8 @@ public class Stop implements Drawable{
     private final Coordinate coordinate;
     /// Street in which is the stop located
     private Street street;
+    /// Stop's GUI shape
+    private final List<Shape> stop_shape = new ArrayList<>();
 
     public Stop(String name, Coordinate coordinate){
         this.name = name;
@@ -86,7 +88,6 @@ public class Stop implements Drawable{
 
     @Override
     public List<Shape> getShapes() {
-        List<Shape> stop_shape = new ArrayList<>();
         Text text = new Text(coordinate.getX() -  ((float) name.length()*2), coordinate.getY() - 10, name);
         text.setFill(Color.RED);
         text.setStyle("-fx-font: 9 arial;");
@@ -95,5 +96,25 @@ public class Stop implements Drawable{
         stop_shape.add(new Circle(coordinate.getX(), coordinate.getY(), 5, Color.RED));
 
         return stop_shape;
+    }
+
+    /**
+     * Selects the stop
+     * Change it's color to PURPLE
+     */
+    public void selectStop(Color color){
+        for (Shape shape : stop_shape) {
+                shape.setFill(color);
+        }
+    }
+
+    /**
+     * Deselects the stop
+     * Change it's color back to RED
+     */
+    public void deselectStop(){
+        for (Shape shape : stop_shape) {
+            shape.setFill(Color.RED);
+        }
     }
 }
