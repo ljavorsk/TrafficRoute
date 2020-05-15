@@ -7,7 +7,7 @@
  */
 
 
-package map.map_src;
+package ija.map.map_src;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 import java.io.FileReader;
 
-import map.Map;
+import ija.map.Map;
 
 public class JsonHandler {
     /// For store and get lists of streets, stops and lines.

@@ -1,4 +1,4 @@
-package gui;
+package ija.gui;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -12,9 +12,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import map.map_src.Bus;
-import map.map_src.Line;
-import map.map_src.Street;
+import ija.map.map_src.Bus;
+import ija.map.map_src.Line;
+import ija.map.map_src.Street;
 
 import java.util.ArrayList;
 import java.util.List;

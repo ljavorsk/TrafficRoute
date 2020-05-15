@@ -6,6 +6,7 @@
  *
  */
 
+package ija;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +15,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import map.Map;
-import map.map_src.*;
+import ija.map.Map;
+import ija.map.map_src.*;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
