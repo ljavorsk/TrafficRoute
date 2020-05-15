@@ -187,7 +187,7 @@ public class MainController {
 
     public void setRightScreen(){
         for(Line line : this.map.getLines()){
-            LineButton lineButton = new LineButton(line, this.lineButtons, this.vbox_setting, this.main_content, this.vbox_line_stop);
+            LineButton lineButton = new LineButton(line, this.lineButtons, this.vbox_setting, this.main_content, this.vbox_line_stop, map.getStreets());
             lineButtons.add(lineButton);
         }
         for(Street street : this.map.getStreets()){
