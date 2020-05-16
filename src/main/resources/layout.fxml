@@ -42,8 +42,8 @@
          <bottom>
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="201.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#showLines" text="Lines" />
-                  <Button mnemonicParsing="false" onMouseClicked="#showStreets" text="Streets" />
+                  <Button mnemonicParsing="false" onMouseClicked="#showLines" prefWidth="70.0" text="Lines" />
+                  <Button mnemonicParsing="false" onMouseClicked="#showStreets" prefWidth="70.0" text="Streets" />
                </children>
             </HBox>
          </bottom>

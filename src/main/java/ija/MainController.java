@@ -50,8 +50,9 @@ public class MainController {
     private Map map;
     /// Indicates if the simulation is running
     private boolean is_running = false;
-
+    /// List for storing buttons, that represent lines on map
     private final List<LineButton> lineButtons = new ArrayList<>();
+    /// List for storing button, that represent streets on map
     private final List<StreetButton> streetButtons = new ArrayList<>();
 
     /**
@@ -114,6 +115,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Show all lines on right side of the screen.
+     */
     @FXML
     private void showLines(){
         vbox_line_stop.getChildren().clear();
@@ -128,6 +132,9 @@ public class MainController {
         vbox_setting.getChildren().clear();
     }
 
+    /**
+     * Show all streets on right side of the screen. And highlight on map.
+     */
     @FXML
     private void showStreets(){
         vbox_line_stop.getChildren().clear();
@@ -185,7 +192,9 @@ public class MainController {
         }, 0, (long) (1000 / time_speed));
     }
 
-
+    /**
+     * Create buttons for streets and lines. This buttons will be later show on right side of the screen.
+     */
     public void setRightScreen(){
         for(Line line : this.map.getLines()){
             LineButton lineButton = new LineButton(line, this.lineButtons, this.vbox_setting, this.main_content, this.vbox_line_stop, map.getStreets());
