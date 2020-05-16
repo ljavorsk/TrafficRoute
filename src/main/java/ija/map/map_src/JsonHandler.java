@@ -19,6 +19,10 @@ import java.io.FileReader;
 
 import ija.map.Map;
 
+/**
+ * This handler work with json files and load data from them.
+ * Data store into map.
+ */
 public class JsonHandler {
     /// For store and get lists of streets, stops and lines.
     private Map map;

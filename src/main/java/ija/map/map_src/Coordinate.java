@@ -8,6 +8,10 @@
 
 package ija.map.map_src;
 
+/**
+ * Represents one coordinate on map.
+ * The Coordinate contains X and Y value.
+ */
 public class Coordinate{
     /// X value of Coordinate
     private float x_coordinate;

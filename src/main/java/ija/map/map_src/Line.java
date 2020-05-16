@@ -13,6 +13,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Represents abstract MHD route by which buses are riding.
+ * The line have defined route and some buses.
+ */
 public class Line{
     /// Unique identification.
     private final int id;

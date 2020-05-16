@@ -272,6 +272,7 @@ public class Route implements Drawable{
             // It's not correctly connected
             return null;
         }
+        index_where_add += closed_street.getCoordinates().size();
 
         // Now when the route has deleted the closed route, index points to beggining of the street
         // connected to the closed one (same coordinate as end of the closed street)
@@ -283,6 +284,9 @@ public class Route implements Drawable{
 
         // Add new streets in route
         int street_index = this.streets.indexOf(closed_street);
+        if (street_index == -1){
+            return null;
+        }
         for (Street street : list_of_streets) {
             this.streets.add(street_index++, street);
         }
