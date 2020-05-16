@@ -24,42 +24,29 @@ public class StreetButton extends Button {
         this.street = street;
         this.allStreetButtons = buttons;
         this.setText(street.getId());
-        this.setMinSize(150, 30);
-        this.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                for(StreetButton button : allStreetButtons){
-                    button.getStreet().deselectStreet();
-                }
-                street.selectStreet();
-                setVboxSetting();
-            }
-        });
+        this.setMinSize(140, 30);
+        this.setOnAction(e -> mainButtonAction());
         setSetting();
+    }
+
+    private void mainButtonAction(){
+        for(StreetButton button : allStreetButtons){
+            button.getStreet().deselectStreet();
+        }
+        street.selectStreet();
+        setVboxSetting();
     }
 
     private void setVboxSetting(){
         vbox_setting.getChildren().clear();
         vbox_setting.getChildren().add(close_open_button);
-        vbox_setting.getChildren().add(new Label("TRAFFIC OVERLOAD"));
+        vbox_setting.getChildren().add(new Label("\nTRAFFIC OVERLOAD"));
         vbox_setting.getChildren().add(slider);
     }
 
     private void setSetting(){
         close_open_button.setText("CLOSE STREET");
-        close_open_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(street.isClosed()){
-                    close_open_button.setText("CLOSE STREET");
-                    street.open_street();
-                }else{
-                    close_open_button.setText("OPEN STREET");
-                    street.close_street();
-                }
-                street.highlightTheStreet();
-            }
-        });
+        close_open_button.setOnAction(e -> closeOpenButtonAction());
         slider.setMin(1);
         slider.setMax(4);
         slider.setValue(1);
@@ -73,6 +60,17 @@ public class StreetButton extends Button {
                 street.highlightTheStreet();
             }
         });
+    }
+
+    private void closeOpenButtonAction(){
+        if(street.isClosed()){
+            close_open_button.setText("CLOSE STREET");
+            street.open_street();
+        }else{
+            close_open_button.setText("OPEN STREET");
+            street.close_street();
+        }
+        street.highlightTheStreet();
     }
 
     public Street getStreet(){
