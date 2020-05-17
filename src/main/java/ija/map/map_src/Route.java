@@ -294,11 +294,12 @@ public class Route implements Drawable{
         // Delete the closed street
         this.streets.remove(closed_street);
 
+        List<Stop> detourStopList = new ArrayList<>(stops);
         // Delete stops on the closed street
-        stops.removeIf(stop -> stop.getStreet().equals(closed_street));
+        detourStopList.removeIf(stop -> stop.getStreet().equals(closed_street));
 
         // Create new Route with edited streets
-        return new Route(this.streets, this.stops, this.starting_point);
+        return new Route(this.streets, detourStopList, this.starting_point);
     }
 
     @Override

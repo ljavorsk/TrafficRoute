@@ -21,6 +21,7 @@ import ija.map.map_src.Bus;
 import ija.map.map_src.Line;
 import ija.map.map_src.Street;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -47,6 +48,10 @@ public class LineButton extends HBox {
     private final Pane main_content;
     /// List of all streets
     private final List<Street> list_street;
+    /// Button for remove all detours.
+    private final Button button_deleteDetours = new Button("REMOVE DETOURS");
+    /// Visibility for button delete detours.
+    private boolean deleteDetoursVisibility = false;
 
     /**
      * Constructor
@@ -110,7 +115,7 @@ public class LineButton extends HBox {
      * One create bus, one delete bus and last create detour.
      */
     private void setUpSettingField(){
-        vbox_setting.getChildren().clear();
+        this.vbox_setting.getChildren().clear();
 
         Button button_newBus = new Button("CREATE BUS");
         button_newBus.setPrefSize(150,25);
@@ -122,9 +127,14 @@ public class LineButton extends HBox {
         button_detour.setPrefSize(150,25);
         button_detour.setOnAction(e -> detourButtonAction());
 
-        vbox_setting.getChildren().add(button_newBus);
-        vbox_setting.getChildren().add(button_deleteBus);
-        vbox_setting.getChildren().add(button_detour);
+        this.button_deleteDetours.setPrefSize(150,25);
+        this.button_deleteDetours.setOnAction(e -> deleteDetoursButtonAction());
+        this.button_deleteDetours.setVisible(this.deleteDetoursVisibility);
+
+        this.vbox_setting.getChildren().add(button_newBus);
+        this.vbox_setting.getChildren().add(button_deleteBus);
+        this.vbox_setting.getChildren().add(button_detour);
+        this.vbox_setting.getChildren().add(this.button_deleteDetours);
     }
 
     /**
@@ -146,6 +156,20 @@ public class LineButton extends HBox {
         if(line.deleteBus()){
             updateBusCounter();
         }
+    }
+
+    /**
+     * Remove all detours. If this operation is unsuccessful, than user is warn by alert message on screen.
+     */
+    private void deleteDetoursButtonAction(){
+        this.line.deselectLine();
+        if(!this.line.deleteDetours()){
+            showErrorAlert("BUS ON DETOUR");
+        }else{
+            this.button_deleteDetours.setVisible(false);
+            this.deleteDetoursVisibility = false;
+        }
+        this.line.selectLine();
     }
 
     /**
@@ -228,13 +252,18 @@ public class LineButton extends HBox {
         }
         // Try make detour operation.
         if(!line.detour(street_remove, list_streetsForDetour)){
-            this.showErrorAlert("BED DEFINED DETOUR");
+            Collections.reverse(list_streetsForDetour);
+            if(!line.detour(street_remove, list_streetsForDetour)) {
+                this.showErrorAlert("BAD DEFINED DETOUR");
+            }
         }
         for(Street street : this.list_street){
             street.unhighlightTheStreet();
         }
         main_content.getChildren().addAll(line.getRoute().getShapes());
         cancelButtonAction(tmp);
+        this.button_deleteDetours.setVisible(true);
+        this.deleteDetoursVisibility = true;
     }
 
     /**

@@ -23,8 +23,12 @@ public class Line{
     private final int id;
     /// Route handler.
     private Route route;
+    /// Route handler without detours.
+    private Route original_route;
     /// List of buses.
     private final List<Bus> buses = new CopyOnWriteArrayList<Bus>();
+    /// List of streets, that was used for detours.
+    private final List<Street> allDetourStreets = new CopyOnWriteArrayList<>();
 
     /**
      * Constructor
@@ -70,6 +74,7 @@ public class Line{
         if(this.route == null){
             return false;
         }
+        this.original_route = this.route;
         this.buses.add(new Bus(String.valueOf(this.buses.size()+1), this.route.getFirst()));
         return true;
     }
@@ -238,7 +243,25 @@ public class Line{
         if(new_route == null){
             return false;
         }
+        this.allDetourStreets.addAll(list_of_streets);
         this.route = new_route;
+        return true;
+    }
+
+    /**
+     * Delete all detours. On detour`s streets can`t be one of the line`s buses.
+     * @return True if operation was successful, false otherwise
+     */
+    public boolean deleteDetours(){
+        for(Bus bus : this.buses){
+            for(Street street : this.allDetourStreets){
+                if(bus.getStreet().equals(street)){
+                    return false;
+                }
+            }
+        }
+        this.route = this.original_route;
+        this.allDetourStreets.clear();
         return true;
     }
 
