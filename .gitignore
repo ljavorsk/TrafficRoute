@@ -3,3 +3,5 @@ gradlew
 .gradle
 gradle
 .idea
+build.radle
+settings.gradle
