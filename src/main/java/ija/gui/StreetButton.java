@@ -38,7 +38,7 @@ public class StreetButton extends Button {
     private final Button close_open_button = new Button("CLOSE STREET");
     /// Slider for set up traffic overload of the street
     private final Slider slider = new Slider();
-
+    /// All line in the map
     private final List<Line> lines;
 
     /**
@@ -46,6 +46,7 @@ public class StreetButton extends Button {
      * @param street Street, that streetButton represent
      * @param buttons List of all streetButtons
      * @param vbox_setting Vbox on right bottom corner of the screen
+     * @param lines Lines that needs to be assigned for bus checking in street closure
      */
     public StreetButton(Street street, List<StreetButton> buttons, VBox vbox_setting, List<Line> lines){
         this.vbox_setting = vbox_setting;
