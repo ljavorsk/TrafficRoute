@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class DetourComboBox extends HBox {
     /// With this comboBox user can choose one street
-    private final ComboBox main_comboBox = new ComboBox();
+    private final ComboBox<String> main_comboBox = new ComboBox<>();
     /// Self destruction button for delete itself.
     private final Button main_button = new Button("X");
 
@@ -114,7 +114,7 @@ public class DetourComboBox extends HBox {
      * Getter for comboBox.
      * @return the main comboBox
      */
-    public ComboBox getComboBox() {
+    public ComboBox<String> getComboBox() {
         return main_comboBox;
     }
 }

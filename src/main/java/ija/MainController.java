@@ -201,8 +201,9 @@ public class MainController {
             lineButtons.add(lineButton);
         }
         for(Street street : this.map.getStreets()){
-            StreetButton streetButton = new StreetButton(street, this.streetButtons, this.vbox_setting);
+            StreetButton streetButton = new StreetButton(street, this.streetButtons, this.vbox_setting, this.map.getLines());
             this.streetButtons.add(streetButton);
         }
+        this.showLines();
     }
 }

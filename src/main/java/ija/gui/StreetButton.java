@@ -8,10 +8,13 @@
 
 package ija.gui;
 
+import ija.map.map_src.Bus;
+import ija.map.map_src.Line;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -36,16 +39,20 @@ public class StreetButton extends Button {
     /// Slider for set up traffic overload of the street
     private final Slider slider = new Slider();
 
+    private final List<Line> lines;
+
     /**
      * Constructor
      * @param street Street, that streetButton represent
      * @param buttons List of all streetButtons
      * @param vbox_setting Vbox on right bottom corner of the screen
      */
-    public StreetButton(Street street, List<StreetButton> buttons, VBox vbox_setting){
+    public StreetButton(Street street, List<StreetButton> buttons, VBox vbox_setting, List<Line> lines){
         this.vbox_setting = vbox_setting;
         this.street = street;
         this.allStreetButtons = buttons;
+        this.lines = lines;
+
         this.setText(street.getId());
         this.setMinSize(140, 30);
         this.setOnAction(e -> mainButtonAction());
@@ -80,6 +87,7 @@ public class StreetButton extends Button {
      */
     private void setSetting(){
         close_open_button.setOnAction(e -> closeOpenButtonAction());
+        close_open_button.setPrefSize(120,25);
         slider.setMin(1);
         slider.setMax(4);
         slider.setValue(1);
@@ -104,10 +112,31 @@ public class StreetButton extends Button {
             close_open_button.setText("CLOSE STREET");
             street.open_street();
         }else{
+            if(!checkBusesOnStreet()){
+                return;
+            }
             close_open_button.setText("OPEN STREET");
             street.close_street();
         }
         street.highlightTheStreet();
+    }
+
+    /**
+     * Check if some bus isn`t on street which streetButton represent.
+     * If there is a bus, than it show alert message on screen.
+     * @return True if there wasn`t any bus on street, false otherwise
+     */
+    private boolean checkBusesOnStreet(){
+        for(Line line : this.lines){
+            for(Bus bus : line.getBuses()){
+                if(bus.getStreet().equals(this.street)){
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "STREET CAN BE CLOSE ONLY IF IS EMPTY");
+                    alert.showAndWait();
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
