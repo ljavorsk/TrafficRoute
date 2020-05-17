@@ -8,6 +8,7 @@
 
 package ija.map.map_src;
 
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -136,9 +137,17 @@ public class Line{
             // Set actual reached street.
             bus.setStreet(bus.getNavigationPoint().getValue());
             if(bus.isStart2end()){
-                bus.setNavigationPoint(this.route.getNext(bus.getNavigationPoint()));
+                AbstractMap.SimpleImmutableEntry<Coordinate, Street> tmp = this.route.getNext(bus.getNavigationPoint());
+                if(tmp.getValue().isClosed()){
+                    return false;
+                }
+                bus.setNavigationPoint(tmp);
             }else{
-                bus.setNavigationPoint(this.route.getPrevious(bus.getNavigationPoint()));
+                AbstractMap.SimpleImmutableEntry<Coordinate, Street> tmp = this.route.getPrevious(bus.getNavigationPoint());
+                if(tmp.getValue().isClosed()){
+                    return false;
+                }
+                bus.setNavigationPoint(tmp);
                 // Set actual reached street.
                 bus.setStreet(bus.getNavigationPoint().getValue());
             }
@@ -150,9 +159,6 @@ public class Line{
                 bus.setWaitingTime();
                 return false;
             }
-        }
-        if(bus.getStreet().isClosed()){
-            return false;
         }
         float move_by = this.setSpeed(bus.getStreet().getTrafficOverload());
         float new_x = bus.getPosition().getX();

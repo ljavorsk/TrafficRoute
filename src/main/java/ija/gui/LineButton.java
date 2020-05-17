@@ -45,8 +45,6 @@ public class LineButton extends HBox {
     private final List<LineButton> list_lineButton;
     /// Main content by which is showing map with streets and lines
     private final Pane main_content;
-    /// List of all streets except streets, that contain line
-    private final List<Street> other_streets;
     /// List of all streets
     private final List<Street> list_street;
 
@@ -65,12 +63,7 @@ public class LineButton extends HBox {
         this.vbox_setting = vbox_setting;
         this.main_content = main_content;
         this.vbox_middle = vbox_middle;
-        this.other_streets = new CopyOnWriteArrayList<>(streets);
         this.list_street = new CopyOnWriteArrayList<>(streets);
-
-        for(Street street : line.getRoute().getStreets()){
-            this.other_streets.remove(street);
-        }
 
         this.setUpMainButton();
         this.updateBusCounter();
@@ -166,14 +159,16 @@ public class LineButton extends HBox {
             street.selectStreet();
         }
         // Store objects, that was on right side of the screen.
-        List<Node> tmp = new CopyOnWriteArrayList<>();
-        for(int i=0; i<vbox_middle.getChildren().size(); i++){
-            tmp.add(vbox_middle.getChildren().get(i));
-        }
+        List<Node> tmp = new CopyOnWriteArrayList<>(vbox_middle.getChildren());
         vbox_middle.getChildren().clear();
 
+        List<Street> other_streets = new CopyOnWriteArrayList<>(this.list_street);
+        for(Street street : line.getRoute().getStreets()){
+            other_streets.remove(street);
+        }
+
         // Create and set up comboBox for selection of streets to detour.
-        ComboBox comboBox_remove = new ComboBox();
+        ComboBox<String> comboBox_remove = new ComboBox<>();
         comboBox_remove.setVisibleRowCount(5);
         for(Street street : line.getRoute().getStreets()){
             comboBox_remove.getItems().add(street.getId());
@@ -188,7 +183,7 @@ public class LineButton extends HBox {
         button_cancel.setPrefSize(90,25);
         button_cancel.setOnAction(e -> cancelButtonAction(tmp));
         Button button_add = new Button("ADD");
-        button_add.setOnAction(e -> addButtonAction(list_detourComboBox, button_add));
+        button_add.setOnAction(e -> addButtonAction(list_detourComboBox, button_add, other_streets));
 
         // Add all on screen.
         vbox_middle.getChildren().add(new Label(String.valueOf(line.getId())));
@@ -196,7 +191,7 @@ public class LineButton extends HBox {
         vbox_middle.getChildren().add(comboBox_remove);
         vbox_middle.getChildren().add(new Label("STREETS OF DETOUR:"));
         vbox_middle.getChildren().add(button_add);
-        addButtonAction(list_detourComboBox, button_add);
+        addButtonAction(list_detourComboBox, button_add, other_streets);
         vbox_setting.getChildren().clear();
         vbox_setting.getChildren().add(button_confirm);
         vbox_setting.getChildren().add(button_cancel);
@@ -208,7 +203,7 @@ public class LineButton extends HBox {
      * @param list_detourComboBox List of detourComboBox, that user choose streets for detour
      * @param tmp Stored objects which was on right side of the screen until user press detour button
      */
-    private void confirmButtonAction(ComboBox comboBox_remove, List<DetourComboBox> list_detourComboBox, List<Node> tmp){
+    private void confirmButtonAction(ComboBox<String> comboBox_remove, List<DetourComboBox> list_detourComboBox, List<Node> tmp){
         Street street_remove = null;
         List<Street> list_streetsForDetour = new CopyOnWriteArrayList<>();
         // Find street by its name.
@@ -227,11 +222,9 @@ public class LineButton extends HBox {
             return;
         }
         // Check if none of the line`s buses is actual on the removing street.
-        for(Bus bus : line.getBuses()){
-            if(bus.getStreet().equals(street_remove)){
-                this.showErrorAlert("AUTOBUS CAN NOT BE ON REMOVE STREET");
-                return;
-            }
+        if(!street_remove.isClosed()){
+            this.showErrorAlert("ONLY CLOSED STREET COULD DETOUR");
+            return;
         }
         // Try make detour operation.
         if(!line.detour(street_remove, list_streetsForDetour)){
@@ -278,13 +271,13 @@ public class LineButton extends HBox {
      * @param comboBoxList List of all detourComboBox objects
      * @param add Button for create new detourComboBox
      */
-    private void addButtonAction(List<DetourComboBox> comboBoxList, Button add){
+    private void addButtonAction(List<DetourComboBox> comboBoxList, Button add, List<Street> other_streets){
         if(!comboBoxList.isEmpty()){
             if(comboBoxList.get(comboBoxList.size()-1).getStreet() == null){
                 return;
             }
         }
-        DetourComboBox comboBox = new DetourComboBox(this.other_streets, comboBoxList, vbox_middle);
+        DetourComboBox comboBox = new DetourComboBox(other_streets, comboBoxList, vbox_middle);
         comboBoxList.add(comboBox);
         vbox_middle.getChildren().remove(add);
         vbox_middle.getChildren().add(comboBox);
@@ -319,8 +312,8 @@ public class LineButton extends HBox {
      * @param message Message, that will be show on the screen
      */
     private void showErrorAlert(String message){
-        Alert wrong_detour = new Alert(Alert.AlertType.ERROR, message);
-        wrong_detour.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.ERROR, message);
+        alert.showAndWait();
     }
 
     /**
