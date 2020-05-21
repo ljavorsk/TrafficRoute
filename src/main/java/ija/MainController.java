@@ -11,6 +11,7 @@ import ija.gui.LineButton;
 import ija.gui.StreetButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -21,6 +22,9 @@ import ija.map.map_src.Drawable;
 import ija.map.map_src.Line;
 import ija.map.map_src.Street;
 
+import java.sql.Time;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -42,6 +46,9 @@ public class MainController {
     /// Vbox field for streets or lines setting
     @FXML
     private VBox vbox_setting;
+    /// Label for the time display
+    @FXML
+    private Label time_label;
     /// Timer in map
     private Timer clock;
     /// Number which represents how many times did we speed the time
@@ -54,6 +61,8 @@ public class MainController {
     private final List<LineButton> lineButtons = new ArrayList<>();
     /// List for storing button, that represent streets on map
     private final List<StreetButton> streetButtons = new ArrayList<>();
+    /// Time in the map, starts at 6:00 AM
+    private LocalTime time = LocalTime.of(6,0);
 
     /**
      * Handler for the scroll zooming
@@ -175,6 +184,7 @@ public class MainController {
 
     /**
      * Starts the simulation
+     * Adds minutes to the time of the simulation
      * @param m Map that will be simulated
      * @param time_speed Speed value which controls time
      * higher is faster
@@ -183,11 +193,16 @@ public class MainController {
         this.is_running = true;
         this.map = m;
         this.time_speed_text.setText("Time speed: " + time_speed);
+        this.time_label.setText("Time: " + getTime());
         clock = new Timer(false);
         clock.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(m::oneMove);
+                Platform.runLater(() -> {
+                    m.oneMove();
+                    time = time.plusMinutes(Math.round(1));
+                    time_label.setText("Time: " + getTime());
+                    });
                 }
         }, 0, (long) (1000 / time_speed));
     }
@@ -206,4 +221,64 @@ public class MainController {
         }
         this.showLines();
     }
+
+    /**
+     * Getter for the time in simulation.
+     * Time have the shape of (HH:mm:ss)
+     * @return Current time in simulation as a string
+     */
+    public String getTime(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return time.format(formatter);
+    }
+
+    /**
+     * Sets the simulation to the exact time
+     * @param hours Hours in time
+     * @param minutes Minutes in time
+     */
+    public void setTime(int hours, int minutes){
+        stopSimulation();
+
+        // Get current time
+        Time current_time = Time.valueOf(this.time);
+
+        // Set the time to user's required value
+        this.time = LocalTime.of(hours,minutes);
+        Time jumping_time = Time.valueOf(this.time);
+
+        long repaint_count = howManyTimesRepaint(current_time, jumping_time);
+        Map map = this.map;
+
+        Timer tmp_clock = new Timer(false);
+        tmp_clock.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                for (int i = 0; i <= repaint_count; i++){
+                    Platform.runLater(map::oneMove);
+                }
+                tmp_clock.cancel();
+            }
+        }, 0, (long) (1));
+
+        // Start the simulation with jumped time
+        startSimulation();
+    }
+
+    /**
+     * Calculates how many times does the simulation have to be repainted
+     * to get to the exact time.
+     * @param current_time Current time of the simulation
+     * @param jumping_time Time where user wants to jump
+     * @return Count of the necessary repaints
+     */
+    private long howManyTimesRepaint(Time current_time, Time jumping_time){
+        long diff_ms = jumping_time.getTime() - current_time.getTime();
+        if (diff_ms < 0) {
+            diff_ms = 24 * 3600000 + diff_ms;
+        }
+        long diff_sec = diff_ms / 1000;
+        return diff_sec / 60;
+    }
 }
+
