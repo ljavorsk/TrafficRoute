@@ -8,6 +8,7 @@
 
 package ija.gui;
 
+import ija.map.map_src.Stop;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -95,6 +96,21 @@ public class LineButton extends HBox {
         }
         line.selectLine();
         setUpSettingField();
+        List<Node> tmp = new CopyOnWriteArrayList<>(vbox_middle.getChildren());
+        vbox_middle.getChildren().clear();
+        vbox_middle.getChildren().add(new Label("   "+this.line.getId()));
+        vbox_middle.getChildren().add(this.main_label);
+        vbox_middle.getChildren().add(new Label(""));
+        for(Stop stop : this.line.getStops()){
+            String stop_info = stop.getName()+" ("+stop.getStreet().getId()+")";
+            vbox_middle.getChildren().add(new Label(stop_info));
+            for(int i=0; i<2; i++){
+                vbox_middle.getChildren().add(new Label("|"));
+            }
+        }
+        for(int i=0; i<2; i++){
+            vbox_middle.getChildren().remove(vbox_middle.getChildren().size()-1);
+        }
     }
 
     /**
@@ -169,7 +185,7 @@ public class LineButton extends HBox {
             this.button_deleteDetours.setVisible(false);
             this.deleteDetoursVisibility = false;
         }
-        this.line.selectLine();
+        mainButtonAction();
     }
 
     /**
@@ -182,8 +198,6 @@ public class LineButton extends HBox {
         for(Street street : line.getRoute().getStreets()){
             street.selectStreet();
         }
-        // Store objects, that was on right side of the screen.
-        List<Node> tmp = new CopyOnWriteArrayList<>(vbox_middle.getChildren());
         vbox_middle.getChildren().clear();
 
         List<Street> other_streets = new CopyOnWriteArrayList<>(this.list_street);
@@ -202,15 +216,16 @@ public class LineButton extends HBox {
         // Create and set up 3 buttons.
         Button button_confirm = new Button("CONFIRM");
         button_confirm.setPrefSize(90,25);
-        button_confirm.setOnAction(e -> confirmButtonAction(comboBox_remove, list_detourComboBox, tmp));
+        button_confirm.setOnAction(e -> confirmButtonAction(comboBox_remove, list_detourComboBox));
         Button button_cancel = new Button("CANCEL");
         button_cancel.setPrefSize(90,25);
-        button_cancel.setOnAction(e -> cancelButtonAction(tmp));
+        button_cancel.setOnAction(e -> cancelButtonAction());
         Button button_add = new Button("ADD");
         button_add.setOnAction(e -> addButtonAction(list_detourComboBox, button_add, other_streets));
 
         // Add all on screen.
         vbox_middle.getChildren().add(new Label(String.valueOf(line.getId())));
+        vbox_middle.getChildren().add(new Label(""));
         vbox_middle.getChildren().add(new Label("REMOVE STREET:"));
         vbox_middle.getChildren().add(comboBox_remove);
         vbox_middle.getChildren().add(new Label("STREETS OF DETOUR:"));
@@ -225,9 +240,8 @@ public class LineButton extends HBox {
      * Try detour street, that user select. If something go wrong it show alert message on the screen.
      * @param comboBox_remove ComboBox where user choose street to detour
      * @param list_detourComboBox List of detourComboBox, that user choose streets for detour
-     * @param tmp Stored objects which was on right side of the screen until user press detour button
      */
-    private void confirmButtonAction(ComboBox<String> comboBox_remove, List<DetourComboBox> list_detourComboBox, List<Node> tmp){
+    private void confirmButtonAction(ComboBox<String> comboBox_remove, List<DetourComboBox> list_detourComboBox){
         Street street_remove = null;
         List<Street> list_streetsForDetour = new CopyOnWriteArrayList<>();
         // Find street by its name.
@@ -261,24 +275,20 @@ public class LineButton extends HBox {
             street.unhighlightTheStreet();
         }
         main_content.getChildren().addAll(line.getRoute().getShapes());
-        cancelButtonAction(tmp);
+        cancelButtonAction();
         this.button_deleteDetours.setVisible(true);
         this.deleteDetoursVisibility = true;
     }
 
     /**
      * Cancel detour operation. Return right side of the screen as it was before the create detour button was press.
-     * @param tmp Objects which was on right side of the screen before the button was press.
      */
-    private void cancelButtonAction(List<Node> tmp){
-        vbox_middle.getChildren().clear();
-        vbox_middle.getChildren().addAll(tmp);
-        setUpSettingField();
-        line.selectLine();
-        for(Street street : list_street){
+    private void cancelButtonAction(){
+        for(Street street : list_street) {
             street.deselectStreet();
             street.unhighlightTheStreet();
         }
+        mainButtonAction();
     }
 
     /**
