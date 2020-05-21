@@ -238,6 +238,7 @@ public class MainController {
      * @param minutes Minutes in time
      */
     public void setTime(int hours, int minutes){
+        boolean was_running = is_running;
         stopSimulation();
 
         // Get current time
@@ -262,7 +263,10 @@ public class MainController {
         }, 0, (long) (1));
 
         // Start the simulation with jumped time
-        startSimulation();
+        if (was_running)
+            startSimulation();
+        else
+            time_label.setText("Time: " + getTime());
     }
 
     /**
