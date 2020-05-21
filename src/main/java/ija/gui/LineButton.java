@@ -9,12 +9,10 @@
 package ija.gui;
 
 import ija.map.map_src.Stop;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -31,12 +29,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * It`s button and label. By button can user show options for modify line with this object represent.
  * Label showing information about number of buses, that line have.
  */
-public class LineButton extends HBox {
-    /// Button for show settings of line
-    private final Button main_button = new Button();
+public class LineButton extends Button {
     /// Label for showing number of buses from line
     private final Label main_label = new Label();
-
     /// Line which represent this object
     private final Line line;
     /// Vbox on right bottom corner of the screen
@@ -73,18 +68,15 @@ public class LineButton extends HBox {
 
         this.setUpMainButton();
         this.updateBusCounter();
-
-        this.getChildren().add(this.main_button);
-        this.getChildren().add(this.main_label);
     }
 
     /**
      * Set up for main button.
      */
     private void setUpMainButton(){
-        this.main_button.setText(String.valueOf(line.getId()));
-        this.main_button.setMinSize(60, 30);
-        this.main_button.setOnAction(e -> mainButtonAction());
+        this.setText(String.valueOf(line.getId()));
+        this.setMinSize(80, 30);
+        this.setOnAction(e -> mainButtonAction());
     }
 
     /**
@@ -96,7 +88,6 @@ public class LineButton extends HBox {
         }
         line.selectLine();
         setUpSettingField();
-        List<Node> tmp = new CopyOnWriteArrayList<>(vbox_middle.getChildren());
         vbox_middle.getChildren().clear();
         vbox_middle.getChildren().add(new Label("   "+this.line.getId()));
         vbox_middle.getChildren().add(this.main_label);
