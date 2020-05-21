@@ -51,10 +51,10 @@ public class MainController {
     /// Label for the time display
     @FXML
     private Label time_label;
-    /// Spinner by which user set hours
+    /// Spinner which is used to set hours
     @FXML
     private Spinner<Integer> spinner_hour;
-    /// Spinner by which user set minutes
+    /// Spinner which is used to set minutes
     @FXML
     private Spinner<Integer> spinner_min;
     /// Timer in map
@@ -245,7 +245,7 @@ public class MainController {
      * @param hours Hours in time
      * @param minutes Minutes in time
      */
-    public void setTime(int hours, int minutes){
+    private void setTime(int hours, int minutes){
         boolean was_running = is_running;
         stopSimulation();
 
@@ -294,8 +294,8 @@ public class MainController {
     }
 
     /**
-     * Jump in time which was sat by 2 spinners by user.
-     * If user set wrong value in one of this spinners, then user get alert message on screen.
+     * Set the times in spinners and call setTime function
+     * If user sets wrong value in one of the spinners, alert message is displayed on screen.
      */
     @FXML
     private void buttonSetTimeAction(){
@@ -303,8 +303,9 @@ public class MainController {
             int hours = Integer.parseInt(this.spinner_hour.getEditor().getText());
             int minutes = Integer.parseInt(this.spinner_min.getEditor().getText());
             if(hours > 23 || hours < 0 || minutes > 59 || minutes < 0){
-                Alert alert = new Alert(Alert.AlertType.ERROR, "INSERTING VALUES ARE OUT OF BOUNDS");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "INSERTED VALUES ARE OUT OF THE BOUNDS");
                 alert.showAndWait();
+                return;
             }
             setTime(hours, minutes);
         }
