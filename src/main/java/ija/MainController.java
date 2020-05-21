@@ -11,7 +11,9 @@ import ija.gui.LineButton;
 import ija.gui.StreetButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -49,6 +51,12 @@ public class MainController {
     /// Label for the time display
     @FXML
     private Label time_label;
+    /// Spinner by which user set hours
+    @FXML
+    private Spinner<Integer> spinner_hour;
+    /// Spinner by which user set minutes
+    @FXML
+    private Spinner<Integer> spinner_min;
     /// Timer in map
     private Timer clock;
     /// Number which represents how many times did we speed the time
@@ -283,6 +291,27 @@ public class MainController {
         }
         long diff_sec = diff_ms / 1000;
         return diff_sec / 60;
+    }
+
+    /**
+     * Jump in time which was sat by 2 spinners by user.
+     * If user set wrong value in one of this spinners, then user get alert message on screen.
+     */
+    @FXML
+    private void buttonSetTimeAction(){
+        try {
+            int hours = Integer.parseInt(this.spinner_hour.getEditor().getText());
+            int minutes = Integer.parseInt(this.spinner_min.getEditor().getText());
+            if(hours > 23 || hours < 0 || minutes > 59 || minutes < 0){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "INSERTING VALUES ARE OUT OF BOUNDS");
+                alert.showAndWait();
+            }
+            setTime(hours, minutes);
+        }
+        catch(Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "ONLY NUMERICAL VALUES ARE ALLOWED");
+            alert.showAndWait();
+        }
     }
 }
 
