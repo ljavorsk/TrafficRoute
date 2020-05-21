@@ -133,5 +133,43 @@
             "Kvitna",
             "Kralikova"
         ]
+    },
+    {
+        "id" : 33,
+        "streets" :
+        [
+            "Warrenova",
+            "Hillova",
+            "Pieninska",
+            "Novozamocka",
+            "Nogradyho"
+        ],
+        "stops" :
+        [
+            "Jenskeho",
+            "Bodhova",
+            "Kralikova",
+            "Centrum",
+            "Nerudova",
+            "Semilaso",
+            "Cervinkova"
+        ]
+    },
+    {
+        "id" : 24,
+        "streets" :
+        [
+            "Warrenova",
+            "J. Bottu",
+            "Jablkova",
+            "Panska"
+        ],
+        "stops" :
+        [
+            "Jenskeho",
+            "Katova",
+            "Bleskova",
+            "Benova"
+        ]
     }
 ]

@@ -551,6 +551,48 @@
         ]
     },
     {
+        "name" : "Warrenova",
+        "coordinates" :
+        [
+            {
+                "x" : 660,
+                "y" : 250
+            },
+            {
+                "x" : 700,
+                "y" : 250
+            },
+            {
+                "x" : 720,
+                "y" : 250
+            },
+            {
+                "x" : 720,
+                "y" : 150
+            }
+
+        ],
+        "stops" :
+        [
+            {
+                "name" : "Bodhova",
+                "coordinates" :
+                {
+                    "x" : 700,
+                    "y" : 250
+                }
+            },
+            {
+                "name" : "Jenskeho",
+                "coordinates" :
+                {
+                    "x" : 720,
+                    "y" : 150
+                }
+            }
+        ]
+    },
+    {
         "name" : "Novozamocka",
         "coordinates" :
             [
