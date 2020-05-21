@@ -281,25 +281,26 @@ public class Route implements Drawable{
             // It's not correctly connected
             return null;
         }
+        List<Street> detourStreetList = new ArrayList<>(streets);
 
         // Add new streets in route
-        int street_index = this.streets.indexOf(closed_street);
+        int street_index = detourStreetList.indexOf(closed_street);
         if (street_index == -1){
             return null;
         }
         for (Street street : list_of_streets) {
-            this.streets.add(street_index++, street);
+            detourStreetList.add(street_index++, street);
         }
 
         // Delete the closed street
-        this.streets.remove(closed_street);
+        detourStreetList.remove(closed_street);
 
         List<Stop> detourStopList = new ArrayList<>(stops);
         // Delete stops on the closed street
         detourStopList.removeIf(stop -> stop.getStreet().equals(closed_street));
 
         // Create new Route with edited streets
-        return new Route(this.streets, detourStopList, this.starting_point);
+        return new Route(detourStreetList, detourStopList, this.starting_point);
     }
 
     @Override

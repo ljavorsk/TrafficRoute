@@ -89,9 +89,9 @@ public class LineButton extends Button {
         line.selectLine();
         setUpSettingField();
         vbox_middle.getChildren().clear();
-        vbox_middle.getChildren().add(new Label("   "+this.line.getId()));
+        vbox_middle.getChildren().add(new Label(String.valueOf(this.line.getId())));
         vbox_middle.getChildren().add(this.main_label);
-        vbox_middle.getChildren().add(new Label(""));
+        vbox_middle.getChildren().add(new Label("-----------------------------------------"));
         for(Stop stop : this.line.getStops()){
             String stop_info = stop.getName()+" ("+stop.getStreet().getId()+")";
             vbox_middle.getChildren().add(new Label(stop_info));
@@ -114,7 +114,7 @@ public class LineButton extends Button {
                 counter++;
             }
         }
-        main_label.setText("   BUS COUNTER: " + counter);
+        main_label.setText("BUS COUNTER: " + counter);
     }
 
     /**
@@ -216,7 +216,7 @@ public class LineButton extends Button {
 
         // Add all on screen.
         vbox_middle.getChildren().add(new Label(String.valueOf(line.getId())));
-        vbox_middle.getChildren().add(new Label(""));
+        vbox_middle.getChildren().add(new Label("-----------------------------------------"));
         vbox_middle.getChildren().add(new Label("REMOVE STREET:"));
         vbox_middle.getChildren().add(comboBox_remove);
         vbox_middle.getChildren().add(new Label("STREETS OF DETOUR:"));
