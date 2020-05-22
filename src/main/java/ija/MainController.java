@@ -70,7 +70,7 @@ public class MainController {
     /// List for storing button, that represent streets on map
     private final List<StreetButton> streetButtons = new ArrayList<>();
     /// Time in the map, starts at 6:00 AM
-    private LocalTime time = LocalTime.of(6,0);
+    private LocalTime time = LocalTime.of(0,0);
 
     /**
      * Handler for the scroll zooming
@@ -263,7 +263,7 @@ public class MainController {
         tmp_clock.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                for (int i = 0; i <= repaint_count; i++){
+                for (int i = 0; i < repaint_count; i++){
                     Platform.runLater(map::oneMove);
                 }
                 tmp_clock.cancel();
