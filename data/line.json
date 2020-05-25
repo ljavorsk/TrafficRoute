@@ -119,6 +119,7 @@
         "id" : 2,
         "streets" :
         [
+            "Sturova",
             "Machova",
             "Delnicka",
             "Tynska",
@@ -128,6 +129,7 @@
         ],
         "stops" :
         [
+            "Kolejni",
             "5. Maja",
             "Dolna",
             "Kvitna",
